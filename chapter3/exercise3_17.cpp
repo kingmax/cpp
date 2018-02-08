@@ -55,12 +55,19 @@ int main()
 		cout << endl;
 		
 		cout << "brother sum:" << endl;
-		for(decltype(ints.size()) i = 0; i*2+1 <= ints.size(); ++i)
+		/* for(decltype(ints.size()) i = 0; i*2+1 <= ints.size(); ++i)
 		{
 			if(i*2+1 == ints.size())
 				cout << "alone:" << ints[ints.size()-1] << endl;
 			else
 				cout << ints[i*2] << " + " << ints[i*2+1] << " = " << ints[i*2] + ints[i*2+1] << endl;
+		} */
+		for(decltype(ints.size()) i = 0; i < ints.size(); i += 2)
+		{
+			if(i+1 == ints.size())
+				cout << "last alone:" << ints[i] << endl;
+			else
+				cout << ints[i] << " + " << ints[i+1] << " = " << ints[i] + ints[i+1] << endl;
 		}
 		
 		cout << "\nfirst + last:" << endl;
