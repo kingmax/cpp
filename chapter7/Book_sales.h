@@ -5,12 +5,32 @@
 #include <string>
 #include <iostream>
 
+
 struct Book_sales
 {
+	//data
 	std::string bookNo = "";
 	unsigned sold = 0;
 	double revenue= 0.0;
 	
+	//constructor
+	//Book_sales() = default;
+	Book_sales(const std::string &isbn) : bookNo(isbn) {}
+	Book_sales(const std::string &isbn, unsigned count, double price) :
+				bookNo(isbn), sold(count), revenue(price * count) {}
+	//Book_sales(std::istream &is) //implemetation outside
+	//exercise7.12
+	Book_sales(std::istream &is)
+	{
+		//read(is, *this);
+		double price;
+		is >> bookNo >> sold >> price;
+		this->revenue = sold * price;
+	}
+	//exercise7.14
+	Book_sales() : bookNo(""), sold(0), revenue(0.0) { std::cout << "call another default constructor" << std::endl; }
+	
+	//methods
 	std::string isbn() const
 	{
 		return bookNo;
@@ -56,5 +76,11 @@ Book_sales add(const Book_sales &lhs, const Book_sales &rhs)
 	sum.combine(rhs);
 	return sum;
 }
+
+//constructor implementation
+/* Book_sales::Book_sales(std::istream &is)
+{
+	read(is, *this); //call read function
+} */
 
 #endif
