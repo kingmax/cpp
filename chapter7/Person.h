@@ -6,23 +6,25 @@
 
 struct Person
 {
-	std::string name;
-	std::string addr;
+	private:
+		std::string name;
+		std::string addr;
 	
-	Person() = default;
-	Person(const std::string &n) : name(n){}
-	Person(const std::string &n, const std::string &a) : name(n), addr(a){}
-	Person(std::istream&); //constructor from cin
-	
-	std::string getName() const
-	{
-		return name;
-	}
-	
-	std::string getAddr() const
-	{
-		return addr;
-	}
+	public:
+		Person() = default;
+		Person(const std::string &n) : name(n){}
+		Person(const std::string &n, const std::string &a) : name(n), addr(a){}
+		Person(std::istream&); //constructor from cin
+		
+		std::string getName() const
+		{
+			return name;
+		}
+		
+		std::string getAddr() const
+		{
+			return addr;
+		}
 };
 
 std::istream &input(std::istream &is, Person &p)
