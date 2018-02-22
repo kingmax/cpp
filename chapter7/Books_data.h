@@ -47,13 +47,14 @@ std::istream &read(std::istream &is, Books_data &item)
 
 std::ostream &print(std::ostream &os, const Books_data &item)
 {
-	os << item.bookNo << ' ' << 
+	os << item.bookNo << ' ' << item.sold << ' '
+	   << item.revenue << ' ' << item.avg_price();
 	return os;
 }
 
 Books_data::Books_data(std::istream &is)
 {
-	
+	read(is, *this);
 }
 
 Books_data& Books_data::combine(const Books_data &rhs)

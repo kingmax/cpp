@@ -6,6 +6,9 @@
 
 struct Person
 {
+	friend std::istream &input(std::istream&, Person&);
+	friend std::ostream &output(std::ostream&, const Person&);
+	
 	private:
 		std::string name;
 		std::string addr;
