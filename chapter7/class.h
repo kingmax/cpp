@@ -33,7 +33,7 @@ class Books_data
 			return *this;
 		}
 		
-		double avg_price() const
+		inline double avg_price() const
 		{
 			if(sold)
 				return revenue / sold;
