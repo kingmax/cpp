@@ -40,6 +40,38 @@ int main()
 	cout << s4 << endl;
 	//s5 = s.substr(12);	 //error
 	
+	//seq container methods:
+	s.insert(s.size(), 5, '!'); //hello world!!!!!
+	cout << s << endl;
+	s.erase(s.size()-5, 5); //hello world
+	cout << s << endl;
+	
+	const char *cp2 = "Stately, plump Buck";
+	s.assign(cp2, 7); //Stately
+	cout << s << endl;
+	s.insert(s.size(), cp2+7); //Stately, plump Buck
+	cout << s << endl;
+	
+	string sa = "some string", sb = "some other string";
+	sa.insert(0, sb);
+	cout << sa << endl;
+	sa.insert(0, sb, 0, sb.size());
+	cout << sa << endl;
+	
+	//append, replace
+	string _s = "C++ Primer", __s = _s;
+	_s.insert(_s.size(), " 4th Ed.");
+	cout << _s << endl;
+	__s.append(" 4th Ed."); 
+	cout << __s << endl; //C++ Primer 4th Ed.
+	
+	_s.erase(11, 3);
+	_s.insert(11, "5th");
+	cout << _s << endl;
+	__s.replace(11, 3, "5th"); //C++ Primer 5th Ed.
+	cout << __s << endl;
+	_s.replace(11, 3, "Fifth"); //C++ Primer Fifth Ed.
+	cout << _s << endl;
 	
 	return 0;
 }

@@ -13,5 +13,14 @@ int main()
 	s2.assign(vc.cbegin(), vc.cend());
 	cout << s2 << endl;
 	
+	string s3("hello, world");
+	cout << s3 << endl;
+	auto b = s3.begin();
+	s3.erase(b, b+6);
+	cout << s3 << endl;
+	//s3.insert(b, "hello"); //error, no memer function!!!
+	s3.insert(b, vc.cbegin(), vc.cend());
+	cout << s3 << endl;
+	
 	return 0;
 }
