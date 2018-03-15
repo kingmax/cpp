@@ -5,6 +5,8 @@
 #include <vector>
 #include <memory>
 
+class BlobStrPtr;  //forward dec
+
 class BlobStr
 {
 	public:
