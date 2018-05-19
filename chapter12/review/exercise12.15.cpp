@@ -47,9 +47,17 @@ void f(destination &d)
 	cout << "connecting now:" << p.use_count() << endl;
 }
 
+void f2(destination &d)
+{
+	connection c = connect(&d);
+	unique_ptr<connection, decltype(end_connection)*> p(&c, end_connection);
+}
+
 int main()
 {
 	destination dest("10.10.10.10", 12345);
+	destination dest2("10.10.10.11", 23456);
 	f(dest);
+	f2(dest2);
 	return 0;
 }
