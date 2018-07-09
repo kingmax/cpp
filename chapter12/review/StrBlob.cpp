@@ -42,6 +42,7 @@ string& StrBlob::front()
 const string& StrBlob::front() const
 {
 	check(0, "front on empty StrBlob");
+	cout << "in const front() const" << endl;
 	return data->front();
 }
 string& StrBlob::back()
@@ -52,6 +53,7 @@ string& StrBlob::back()
 const string& StrBlob::back() const
 {
 	check(0, "back on empty StrBlob");
+	cout << "in const back() const" << endl;
 	return data->back();
 }
 void StrBlob::pop_back()

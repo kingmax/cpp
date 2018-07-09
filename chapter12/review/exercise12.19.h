@@ -94,6 +94,8 @@ public:
 		return *this;
 	}
 	
+
+	
 private:
 	std::weak_ptr<vector<string>> wptr;
 	size_t curr;
