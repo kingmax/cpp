@@ -7,6 +7,7 @@ class HasPtr
 public:
 	HasPtr(const string &s = string()) : ps(new string(s)), i(0) { cout << "default constructor" << endl; }
 	
+	//Copy constructor
 	HasPtr(const HasPtr &orig) : ps(new string(*orig.ps)), i(orig.i)
 	{
 		*ps += "_added";
@@ -20,6 +21,7 @@ public:
 		cout << &i << ' ' << i << endl;
 	}
 	
+	//Assigmentor
 	HasPtr& operator=(const HasPtr &rhs)
 	{
 		cout << "assigment operator" << endl;
