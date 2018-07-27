@@ -5,6 +5,8 @@ using namespace std;
 
 class HasPtr //simulate Value Type
 {
+	friend void swap(HasPtr&, HasPtr&);
+	
 private:
 	int i;
 	string* ps;
@@ -17,14 +19,23 @@ public:
 	HasPtr(const HasPtr& p) : ps(new string(*p.ps)), i(p.i){}
 	
 	//copy assignment operator
-	HasPtr& operator=(const HasPtr&);
+	/* HasPtr& operator=(const HasPtr&); */
+	HasPtr& operator=(HasPtr);
 	
 	~HasPtr(){ delete ps; }
 	
 	void output();
 };
 
-HasPtr& HasPtr::operator=(const HasPtr &rhs)
+inline void swap(HasPtr &lhs, HasPtr &rhs)
+{
+	cout << "swap" << endl;
+	using std::swap;
+	swap(lhs.ps, rhs.ps);
+	swap(lhs.i, rhs.i);
+}
+
+/* HasPtr& HasPtr::operator=(const HasPtr &rhs)
 {
 	auto newp = new string(*rhs.ps); //copy string
 	delete ps;
@@ -32,6 +43,13 @@ HasPtr& HasPtr::operator=(const HasPtr &rhs)
 	
 	i = rhs.i;
 	
+	return *this;
+} */
+
+HasPtr& HasPtr::operator=(HasPtr rhs)
+{
+	cout << "operator=(HasPtr)" << endl;
+	swap(*this, rhs);
 	return *this;
 }
 
@@ -53,6 +71,11 @@ int main(int argc, char** argv)
 	val2 = val;
 	//cout << val2.i << *val2.ps << endl;
 	val2.output();
+	
+	HasPtr val3("hi");
+	val3.output();
+	val3 = val2;
+	val3.output();
 	
 	return 0;
 }
