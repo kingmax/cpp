@@ -1,10 +1,14 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 class HasPtr //simulate Pointer
 {
+	friend void swap(HasPtr&, HasPtr&);
+	
 private:
 	string* ps;
 	int i;
@@ -21,7 +25,22 @@ public:
 	~HasPtr();
 	
 	void output();
+	
+	bool operator<(const HasPtr&);
 };
+
+inline void swap(HasPtr &lhs, HasPtr &rhs)
+{
+	cout << "swap(&, &)" << endl;
+	using std::swap;
+	swap(lhs.ps, rhs.ps);
+	swap(lhs.i, rhs.i);
+}
+
+bool HasPtr::operator<(const HasPtr& rhs)
+{
+	return *ps < *rhs.ps;
+}
 
 HasPtr& HasPtr::operator=(const HasPtr &rhs)
 {
@@ -65,6 +84,17 @@ int main(int argc, char** argv)
 	
 	pt3 = pt;
 	pt3.output();
+	cout << endl;
+	
+	//ex13.31
+	vector<HasPtr> vs = {HasPtr{"a"}, HasPtr{"b"}, HasPtr{"c"}, HasPtr{"ab"}, HasPtr{"abc"}};
+	for(auto &v : vs)
+		v.output();
+	
+	cout << "\nafter sorted" << endl;
+	std::sort(vs.begin(), vs.end());
+	for(auto &v : vs)
+		v.output();
 	
 	return 0;
 }
