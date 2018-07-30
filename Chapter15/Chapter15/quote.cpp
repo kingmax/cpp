@@ -119,6 +119,36 @@ private:
 class Last final : Base
 {};
 
+//exercise15.13, 15.14
+class B
+{
+private:
+	string basename;
+
+public:
+	B(const string& s = "baseName") : basename(s) {}
+	virtual ~B() {}
+
+	string name() { cout << "base.name()" << endl;  return basename; }
+	virtual void print(ostream &os)
+	{
+		os << basename;
+	}
+};
+
+class D : public B
+{
+private:
+	int i;
+
+public:
+	void print(ostream &os) override
+	{
+		B::print(os);
+		os << " " << i << endl;
+	}
+};
+
 
 //main
 int main()
@@ -133,6 +163,31 @@ int main()
 
 	bq.debug();
 	cout << bq.net_price(8) << endl;
+
+	cout << "\n Exercise 15.13~14" << endl;
+	B bobj;
+	B *bp1 = &bobj;  //pointer
+	B &br1 = bobj;	 //reference
+	D dobj;
+	B *bp2 = &dobj;
+	B &br2 = dobj;	//reference
+
+	bobj.print(cout);
+	cout << string(20, '-') << endl;
+
+	dobj.print(cout);
+	cout << string(20, '-') << endl;
+
+	cout << bp1->name() << endl;
+	cout << string(20, '-') << endl;
+
+	cout << bp2->name() << endl;
+	cout << string(20, '-') << endl;
+
+	br1.print(cout);
+	cout << string(20, '-') << endl;
+
+	br2.print(cout);
 
 	getchar();
 	return 0;
