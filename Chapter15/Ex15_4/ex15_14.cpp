@@ -1,5 +1,7 @@
 #include <string>
 #include <iostream>
+#include <vector>
+#include <memory>
 using namespace std;
 
 class Quote
@@ -105,6 +107,46 @@ double D::net_price(size_t n) const
 	}
 }
 
+//Default Constructor, Copy Constructor, Assigment, Move, Deconstructor::
+class Quote2
+{
+public:
+	Quote2() = default;
+	Quote2(const Quote2&) = default;
+	Quote2(Quote2&&) = default;
+
+	Quote2& operator=(const Quote2&) = default;
+	Quote2& operator=(Quote2&&) = default;
+
+	virtual ~Quote2() = default;
+
+	Quote2(const string&, double, size_t, double);
+
+private:
+	string bookNo;
+	
+protected:
+	double price;
+	size_t quantity;
+	double discount;
+};
+
+Quote2::Quote2(const string& book, double price, size_t quantity, double discount) :
+	bookNo(book), price(price), quantity(quantity), discount(discount)
+{}
+
+class Disc_quote2 : public Quote2
+{
+public:
+	//using 用于声明继承构造函数时，不会改变访问级别(即原来是private的仍然是private)
+	//如果被继承构造函数带有默认参数的，继承将得到多个构造函数，没有默认参数
+	using Quote2::Quote2; //gen Constructor for Derived Class (all base constructor function)
+	
+public:
+	Disc_quote2(const string& book) : Quote2(book, 0, 0, 0) { }
+};
+
+
 //main
 int main()
 {
@@ -118,6 +160,14 @@ int main()
 	D d("book-d1-isbn", 20.5, 10, 0.25);
 	d.debug();
 	cout << d.net_price(20) << endl;
+
+	Disc_quote2 d2("d2", 100, 10, 0.3);
+	Disc_quote2 d3_ex("d3-extent");
+
+	vector<shared_ptr<Quote>> basket;
+	basket.push_back(make_shared<Quote>("0-201-82470-1", 50));
+	basket.push_back(make_shared<Bulk_quote>("0-201-54848-8", 50, 10, 0.25));
+	cout << basket.back()->isbn() << endl;
 
 	getchar();
 	return 0;
