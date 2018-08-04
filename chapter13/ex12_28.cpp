@@ -116,7 +116,7 @@ int main()
 {
 	BinStrTree bst;
 	TreeNode first("first");
-	first.set_left(bst.
+	
 	
 	return 0;
 }
