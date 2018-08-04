@@ -87,7 +87,7 @@ public:
 	~BinStrTree(){ /* delete root; */ destroy_tree(); }
 	
 	void insert(const string&);
-	void destroy();
+	void destroy_tree();
 	TreeNode* search(const string&);
 };
 
@@ -124,6 +124,41 @@ void BinStrTree::insert(const string& k, TreeNode* leaf)
 	}
 }
 
+TreeNode* BinStrTree::search(const string& s, TreeNode* leaf)
+{
+	if(leaf != NULL)
+	{
+		string v = leaf->Value();
+		if(s == v)
+			return leaf;
+		if(s < v)
+			return search(s, leaf->left);
+		else
+			return search(s, leaf->right);
+	}
+	else return nullptr;
+}
+
+void BinStrTree::insert(const string& s)
+{
+	if(root != NULL)
+		insert(s, root);
+	else
+	{
+		root = new TreeNode(s);
+	}
+}
+
+TreeNode* BinStrTree::search(const string& s)
+{
+	return search(s, root);
+}
+
+void BinStrTree::destroy_tree()
+{
+	destroy_tree(root);
+}
+
 BinStrTree& BinStrTree::operator=(const BinStrTree& rhs)
 {
 	TreeNode new_root = new TreeNode(*rhs.root);
@@ -136,7 +171,10 @@ int main()
 {
 	BinStrTree bst;
 	TreeNode first("first");
-	
+	bst.insert(first);
+	TreeNode second("second");
+	bst.insert(second);
+	cout << first.Value() << endl;
 	
 	return 0;
 }
