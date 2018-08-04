@@ -15,9 +15,10 @@ public:
 	void print() const;
 	//void set_left(const TreeNode*);
 	
-	string& Value() const { return value; } //for Tree.insert
+	string Value() const { return value; } //for Tree.insert
 	
 private:
+public:
 	string	value;
 	int		*count;
 	TreeNode *left;
@@ -161,7 +162,7 @@ void BinStrTree::destroy_tree()
 
 BinStrTree& BinStrTree::operator=(const BinStrTree& rhs)
 {
-	TreeNode new_root = new TreeNode(*rhs.root);
+	TreeNode* new_root = new TreeNode(rhs.root->Value());
 	delete root;
 	root = new_root;
 	return *this;
@@ -171,9 +172,9 @@ int main()
 {
 	BinStrTree bst;
 	TreeNode first("first");
-	bst.insert(first);
+	bst.insert("FirstNode");
 	TreeNode second("second");
-	bst.insert(second);
+	bst.insert("SecondNode");
 	cout << first.Value() << endl;
 	
 	return 0;
