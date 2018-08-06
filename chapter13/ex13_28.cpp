@@ -168,6 +168,7 @@ BinStrTree& BinStrTree::operator=(const BinStrTree& rhs)
 	return *this;
 }
 
+
 int main()
 {
 	BinStrTree bst;
