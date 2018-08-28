@@ -1,0 +1,15 @@
+D:\git\cpp\WpfAppInMaxTesting\bin\Release\WpfAppInMaxTesting.exe.config
+D:\git\cpp\WpfAppInMaxTesting\bin\Release\WpfAppInMaxTesting.exe
+D:\git\cpp\WpfAppInMaxTesting\bin\Release\WpfAppInMaxTesting.pdb
+D:\git\cpp\WpfAppInMaxTesting\obj\Release\WpfAppInMaxTesting.csprojAssemblyReference.cache
+D:\git\cpp\WpfAppInMaxTesting\obj\Release\MainWindow.g.cs
+D:\git\cpp\WpfAppInMaxTesting\obj\Release\App.g.cs
+D:\git\cpp\WpfAppInMaxTesting\obj\Release\WpfAppInMaxTesting_MarkupCompile.cache
+D:\git\cpp\WpfAppInMaxTesting\obj\Release\WpfAppInMaxTesting_MarkupCompile.lref
+D:\git\cpp\WpfAppInMaxTesting\obj\Release\MainWindow.baml
+D:\git\cpp\WpfAppInMaxTesting\obj\Release\WpfAppInMaxTesting.g.resources
+D:\git\cpp\WpfAppInMaxTesting\obj\Release\WpfAppInMaxTesting.Properties.Resources.resources
+D:\git\cpp\WpfAppInMaxTesting\obj\Release\WpfAppInMaxTesting.csproj.GenerateResource.cache
+D:\git\cpp\WpfAppInMaxTesting\obj\Release\WpfAppInMaxTesting.csproj.CoreCompileInputs.cache
+D:\git\cpp\WpfAppInMaxTesting\obj\Release\WpfAppInMaxTesting.exe
+D:\git\cpp\WpfAppInMaxTesting\obj\Release\WpfAppInMaxTesting.pdb
