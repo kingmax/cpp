@@ -18,9 +18,12 @@ int main()
 {
 	Quote base("0-201-82470-1", 50);
 	print_total(cout, base, 10);
+	base.debug();
 
+	cout << endl;
 	Bulk_Quote derived("0-201-82470-2", 50, 5, 0.19);
 	print_total(cout, derived, 10);
+	derived.debug();
 
 	return 0;
 }

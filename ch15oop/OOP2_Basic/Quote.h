@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-
+#include <iostream>
 
 class Quote
 {
@@ -25,6 +25,14 @@ public:
 
 	// 通常基类都应该定义一个虚析构函数！
 	virtual ~Quote() = default;
+
+	// 15.11, page539(565/864)
+	virtual void debug() const
+	{
+		std::cout << "private.bookNo: " << bookNo
+			<< " protected.price: " << price
+			<< std::endl;
+	}
 
 private:
 	std::string bookNo;

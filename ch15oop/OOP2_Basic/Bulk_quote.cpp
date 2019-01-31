@@ -1,4 +1,5 @@
 #include "Bulk_quote.h"
+#include <iostream>
 
 Bulk_Quote::Bulk_Quote(const std::string &book, double p,
 	std::size_t qty, double disc) :
@@ -17,4 +18,12 @@ double Bulk_Quote::net_price(std::size_t n) const
 	{
 		return n * price;
 	}
+}
+
+void Bulk_Quote::debug() const
+{
+	__super::debug();
+	std::cout << "private.min_qty: " << min_qty
+		<< ", discount: " << discount
+		<< std::endl;
 }
