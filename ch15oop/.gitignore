@@ -1,0 +1,5 @@
+*.suo
+*.iobj
+*.ipch
+*.user
+.vs/**
