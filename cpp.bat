@@ -10,6 +10,9 @@ echo input hello or hello.exe run the program
 
 
 set npp="C:\Program Files\Notepad++\notepad++.exe"
+if not exist %npp% (
+	set npp="C:\Program Files (x86)\Notepad++\notepad++.exe"
+)
 set path=%path%;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.14.26428\bin\Hostx64\x64;
 set include=%include%;C:\Program Files (x86)\Windows Kits\10\Include\10.0.17134.0\um;C:\Program Files (x86)\Windows Kits\10\Include\10.0.17134.0\ucrt;C:\Program Files (x86)\Windows Kits\10\Include\10.0.17134.0\shared;C:\Program Files (x86)\Windows Kits\10\Include\10.0.17134.0\winrt;
 set lib=%lib%;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.17134.0\um\x64;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.17134.0\ucrt\x64;
