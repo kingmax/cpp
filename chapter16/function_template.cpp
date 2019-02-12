@@ -28,7 +28,8 @@ int compare(const T &v1, const T &v2)
 }
 
 // 非类型模板参数
-template <unsigned N, unsigned M> int compareText(const char (&r1)[N], const char (&r2)[M])
+template <unsigned N, unsigned M> 
+int compareText(const char (&r1)[N], const char (&r2)[M])
 {
 	return strcmp(r1, r2);
 }
