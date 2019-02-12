@@ -32,6 +32,10 @@ template <unsigned N, unsigned M> int compareText(const char (&r1)[N], const cha
 	return strcmp(r1, r2);
 }
 
+// inline or constexpr
+template <typename T> inline T min(const T&, const T&);
+template <typename T> constexpr T fo(const T&);
+
 int main()
 {
 	std::cout << compare(1, 0) << std::endl;
