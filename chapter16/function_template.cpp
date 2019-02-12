@@ -11,6 +11,13 @@ template <typename T> T swap(T* p1, T* p2)
 	return tmp;
 }
 
+// class and typename is same!
+template <class T> T foo(T *p)
+{
+	T tmp = *p;
+	return tmp;
+}
+
 template <typename T>
 int compare(const T &v1, const T &v2)
 {
@@ -42,6 +49,8 @@ int main()
 	std::cout << s1 << ", " << s2 << std::endl;
 	swap(&s1, &s2);
 	std::cout << s1 << ", " << s2 << std::endl;
+	
+	std::cout << foo(&s2) << std::endl; // hi
 	
 	return 0;
 }
