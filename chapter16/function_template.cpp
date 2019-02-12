@@ -26,6 +26,12 @@ int compare(const T &v1, const T &v2)
 	return 0;
 }
 
+// 非类型模板参数
+template <unsigned N, unsigned M> int compareText(const char (&r1)[N], const char (&r2)[M])
+{
+	return strcmp(r1, r2);
+}
+
 int main()
 {
 	std::cout << compare(1, 0) << std::endl;
@@ -51,6 +57,9 @@ int main()
 	std::cout << s1 << ", " << s2 << std::endl;
 	
 	std::cout << foo(&s2) << std::endl; // hi
+	
+	char t1[] = "hi", t2[] = "mom";
+	std::cout << compareText(t1, t2) << std::endl;
 	
 	return 0;
 }
