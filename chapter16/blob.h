@@ -1,6 +1,9 @@
+#pragma once
+
 #include <vector>
 #include <string>
 #include <initializer_list>
+#include <memory> //shared_ptr
 
 template<typename T>
 class Blob
