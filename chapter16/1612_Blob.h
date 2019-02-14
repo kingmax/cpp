@@ -20,5 +20,13 @@ public:
 	void push_back(T&& t) { data->push_back(std::move(t)); }
 	void pop_back();
 	
+	// element access
+	T& back();
+	T& operator[](size_type i);
+	const T& back() const;
+	const operator[](size_type i) const;
 	
+private:
+	std::shared_ptr<std::vector<T>> data;
+	void check(size_type i, const std::string &msg) const;
 };
