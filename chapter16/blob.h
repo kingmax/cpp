@@ -5,9 +5,19 @@
 #include <initializer_list>
 #include <memory> //shared_ptr
 
+// forward declare
+template <typename> class BlobPtr;
+template <typename> class Blob;
+
+template <typename T>
+bool operator==(const Blob<T>&, const Blob<T>&);
+
 template<typename T>
 class Blob
 {
+	friend class BlobPtr<T>;
+	friend bool operator==<T>(const Blob<T>&, const Blob<T>&);
+	
 public:
 	typedef T value_type;
 	// ref: http://feihu.me/blog/2014/the-origin-and-usage-of-typename/
