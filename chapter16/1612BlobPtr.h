@@ -7,18 +7,36 @@
 // forward declare
 template<typename> class BlobPtr;
 
+/*
 template<typename T>
 bool operator==(const BlobPtr<T>& lhs, const BlobPtr<T>& rhs);
 
 template<typename T>
 bool operator<(const BlobPtr<T>& lhs, const BlobPtr<T>& rhs);
+*/
 
+template<typename T>
+bool operator==(const BlobPtr<T> &lhs, const BlobPtr<T> &rhs)
+{
+	if(lhs.wptr.lock() != rhs.wptr.lock())
+		throw runtime_error("wptrs to different Blobs!");
+	return lhs.i == rhs.i;
+}
+
+template<typename T>
+bool operator<(const BlobPtr<T> &lhs, const BlobPtr<T> &rhs)
+{
+	if(lhs.wptr.lock() != rhs.wptr.lock())
+		throw runtime_error("wptrs to different Blobs!");
+	return lhs.i < rhs.i;
+}
 
 template<typename T>
 class BlobPtr
 {
+	// == and < 后面不带<T>似乎也行？反正编译是能过
 	friend bool operator==<T>(const BlobPtr<T>& lhs, const BlobPtr<T>& rhs);
-	friend bool operator<<T>(const BlobPtr<T>& lhs, const BlobPtr<T>& rhs);
+	friend bool operator< <T>(const BlobPtr<T>& lhs, const BlobPtr<T>& rhs);
 	
 public:
 	BlobPtr() : curr(0){}
@@ -45,3 +63,68 @@ private:
 	std::size_t curr;
 };
 
+template <typename T>
+std::shared_ptr<std::vector<T>> BlobPtr<T>::check
+	(std::size_t i, const std::string &msg) const
+{
+	//ref: chapter12/weak_ptr.cpp
+	auto ret = wptr.lock();
+	
+	if(!ret)
+		throw std::runtime_error("unbound BlobPtr");
+	
+	if(i >= ret->size())
+		throw std::out_of_range(msg);
+	
+	return ret;
+}
+
+template<typename T>
+BlobPtr<T>& BlobPtr<T>::operator++()
+{
+	check(curr, "increment past end of StrBlob");
+	++curr;
+	return *this;
+}
+
+template<typename T>
+BlobPtr<T>& BlobPtr<T>::operator--()
+{
+	check(curr, "decrement past begin of BlobPtr");
+	--curr;
+	return *this;
+}
+
+template<typename T>
+BlobPtr<T> BlobPtr<T>::operator++(int)
+{
+	BlobPtr ret = *this;
+	++*this;
+	return ret;
+}
+
+template<typename T>
+BlobPtr<T> BlobPtr<T>::operator--(int)
+{
+	BlobPtr ret = *this;
+	--*this;
+	return ret;
+}
+
+/*
+template<typename T>
+bool operator==(const BlobPtr<T> &lhs, const BlobPtr<T> &rhs)
+{
+	if(lhs.wptr.lock() != rhs.wptr.lock())
+		throw runtime_error("wptrs to different Blobs!");
+	return lhs.i == rhs.i;
+}
+
+template<typename T>
+bool operator<(const BlobPtr<T> &lhs, const BlobPtr<T> &rhs)
+{
+	if(lhs.wptr.lock() != rhs.wptr.lock())
+		throw runtime_error("wptrs to different Blobs!");
+	return lhs.i < rhs.i;
+}
+*/

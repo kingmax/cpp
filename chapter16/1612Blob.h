@@ -3,9 +3,14 @@
 #include <vector>
 #include <string>
 
+// forward declare
+template <typename T> class BlobPtr;
+
 template<typename T>
 class Blob
 {
+	friend class BlobPtr<T>; // so, the ptr can access Blob private data!
+	
 public:
 	typedef typename std::vector<T>::size_type size_type;
 	
@@ -25,7 +30,7 @@ public:
 	T& back();
 	T& operator[](size_type i);
 	const T& back() const;
-	const operator[](size_type i) const;
+	const T& operator[](size_type i) const;
 	
 private:
 	std::shared_ptr<std::vector<T>> data;
