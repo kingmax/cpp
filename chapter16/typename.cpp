@@ -18,10 +18,28 @@ int compare(const T &v1, const T &v2, F f = F())
 	return 0;
 }
 
+//page595
+template <typename T = int>
+class Numbers
+{
+public:
+	Numbers(T v = 0) : val(v)
+	{}
+	
+private:
+	T val;
+};
+
 int main()
 {
 	bool i = ::compare(0, 42);
 	
 	Sales_data item1(cin), item2(cin);
 	bool j = compare(item1, item2, compareIsbn);
+	
+	//
+	Numbers<long double> lots_of_precision;
+	Numbers<> average_int_precision;
 }
+
+
