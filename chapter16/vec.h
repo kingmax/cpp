@@ -65,7 +65,7 @@ Vec<T>::Vec(const Vec& v)
 }
 
 template<typename T>
-Vec<T>::Vec(std::initializer_list il)
+Vec<T>::Vec(std::initializer_list<T> il)
 {
 	T* const newData = alloc.allocate(il.size());
 	T* p = newData;
@@ -158,7 +158,7 @@ void Vec<T>::alloc_n_move(std::size_t n)
 	T* dest = newData;
 	T* old = element;
 	for(std::size_t i = 0; i != size(); ++i)
-		alloc.construct(dest++; std::move(*old++));
+		alloc.construct(dest++, std::move(*old++));
 	
 	free();
 	
