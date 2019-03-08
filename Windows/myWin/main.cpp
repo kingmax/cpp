@@ -5,8 +5,11 @@
 
 #define WIN32_LEAN_AND_MEAN
 
+// Global Vars
+HINSTANCE hInst;
 const LPCWSTR className = L"myWindow";
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+LRESULT CALLBACK About(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -42,6 +45,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	win.hCursor = LoadCursor(NULL, IDC_CROSS);
 	win.hbrBackground = (HBRUSH)GetStockObject(DKGRAY_BRUSH);
 	win.lpszMenuName = NULL;
+	//win.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1);
 	win.lpszClassName = className;
 	//win.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 	win.hIconSm = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
@@ -50,6 +54,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	{
 		return 0;
 	}
+
+	hInst = hInstance;
 
 	/*
 	CreateWindowExW(
@@ -74,7 +80,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		NULL, className, className,
 		WS_OVERLAPPEDWINDOW | WS_VISIBLE,
 		CW_USEDEFAULT, CW_USEDEFAULT, /*0, 0,*/ 640, 480,
-		NULL, NULL, hInstance, NULL
+		NULL, /*LoadMenu(hInstance, MAKEINTRESOURCE(IDR_MENU1))*/NULL, hInstance, NULL
 	);
 
 	if (!hwnd)
@@ -82,12 +88,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return FALSE;
 	}
 
+	HMENU hMenu = LoadMenu(hInstance, MAKEINTRESOURCE(IDR_MENU1));
+	SetMenu(hwnd, hMenu);
+
+	ShowWindow(hwnd, nCmdShow);
+	UpdateWindow(hwnd);
+
+
 	MSG msg;
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
+
 
 	return (int)msg.wParam;
 }
@@ -97,29 +111,58 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
 	switch (msg)
 	{
-	case WM_CREATE:
+		case WM_CREATE:
 		{
 			
 		}
-		break;
-	case WM_COMMAND:
+
+		case WM_COMMAND:
 		{
-			
+			//œÏ”¶≤Àµ•√¸¡Ó
+			int wmID = LOWORD(wparam);
+			switch (wmID)
+			{
+			case ID_FILE_EXIT:
+				DestroyWindow(hwnd);
+				break;
+
+			case ID_HELP_ABOUT:
+				DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG1), hwnd, About);
+				break;
+
+			default:
+				return DefWindowProc(hwnd, msg, wparam, lparam);
+			}
 		}
-		break;
-	case WM_PAINT:
+
+		case WM_PAINT:
 		{
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(hwnd, &ps);
 			EndPaint(hwnd, &ps);
+			break;
 		}
-		break;
-	case WM_DESTROY:
+
+		case WM_DESTROY:
 		{
 			PostQuitMessage(0);
+			break;
 		}
-		break;
-	default:
-		return DefWindowProc(hwnd, msg, wparam, lparam);
+
+		default:
+			return DefWindowProc(hwnd, msg, wparam, lparam);
 	}
+
+	return 0;
+}
+
+INT_PTR CALLBACK About(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
+{
+	switch (msg)
+	{
+	case WM_INITDIALOG:
+		return (INT_PTR)TRUE;
+
+	}
+	return (INT_PTR)FALSE;
 }
