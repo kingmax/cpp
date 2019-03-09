@@ -119,7 +119,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 				HWND hPrev = (HWND)lparam;
 				LPTSTR title = new TCHAR[256];
 				//GetWindowText(hPrev, title, 256);
-				int nChars = SendMessage(hPrev, WM_GETTEXT, 256, (LPARAM)title);
+				int nChars = SendMessage(hPrev, WM_GETTEXT, 256, (LPARAM)title);	//得到的窗口标题是乱码？
 				MessageBox(hwnd,/* L"Yes, I do!"*/title, L"你用鼠标激活了窗口", MB_OK);
 				delete[] title;
 			}
@@ -132,13 +132,16 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 
 		case WM_SIZE:
 		{
-			LPTSTR txt = new TCHAR[256];
+			LPTSTR txt = new TCHAR[64];
+			//char txt[256];
 			int w = LOWORD(lparam);
 			int h = HIWORD(lparam);
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(hwnd, &ps);
-			wprintf_s(txt, "w = %d, h = %d \0", w, h);
+			wsprintf(txt, L"w = %d, h = %d \0", w, h);
+			//sprintf_s(txt, "w = %d, h = %d \0", w, h);
 			TextOut(hdc, 0, 0, txt, wcslen(txt));
+			//TextOut(hdc, 0, 0, (LPCWSTR)txt, strlen(txt));
 			EndPaint(hwnd, &ps);
 			delete[] txt;
 
@@ -146,6 +149,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 			{
 				MessageBox(hwnd, L"窗口最大化了", TEXT("提示"), MB_OK);
 			}
+			break;
+		}
+
+		case WM_MOVE:
+		{
+			LPTSTR str = new TCHAR[64];
+			int x = LOWORD(lparam);
+			int y = HIWORD(lparam);
+			HDC hDC = GetDC(hwnd);
+			wsprintf(str, L"moveX = %d, moveY = %d\0", x, y);
+			TextOut(hDC, 0, 0, str, wcsnlen_s(str, 64));
+			ReleaseDC(hwnd, hDC);
+			delete[] str;
 			break;
 		}
 
