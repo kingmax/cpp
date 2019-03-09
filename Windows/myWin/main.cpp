@@ -117,11 +117,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 			if (LOWORD(wparam) == WA_CLICKACTIVE)
 			{
 				HWND hPrev = (HWND)lparam;
-				LPTSTR title = new TCHAR[32];
-				GetWindowText(hPrev, title, 32);
+				LPTSTR title = new TCHAR[256];
+				//GetWindowText(hPrev, title, 256);
+				int nChars = SendMessage(hPrev, WM_GETTEXT, 256, (LPARAM)title);
 				MessageBox(hwnd,/* L"Yes, I do!"*/title, L"你用鼠标激活了窗口", MB_OK);
-				title = nullptr;
-				//delete title;
+				delete[] title;
 			}
 			if (HIWORD(wparam) == TRUE)
 			{
@@ -132,17 +132,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 
 		case WM_SIZE:
 		{
-			TCHAR txt[64];
+			LPTSTR txt = new TCHAR[256];
 			int w = LOWORD(lparam);
 			int h = HIWORD(lparam);
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(hwnd, &ps);
-			sprintf(txt, "w = %d, h = %d \0", w, h);
-			TextOut(hdc, 0, 0, txt, 64);
+			wprintf_s(txt, "w = %d, h = %d \0", w, h);
+			TextOut(hdc, 0, 0, txt, wcslen(txt));
 			EndPaint(hwnd, &ps);
+			delete[] txt;
+
 			if (wparam == SIZE_MAXIMIZED)
 			{
-				MessageBox(hwnd, L"窗口最大化了", _T("提示"), MB_OK);
+				MessageBox(hwnd, L"窗口最大化了", TEXT("提示"), MB_OK);
 			}
 			break;
 		}
