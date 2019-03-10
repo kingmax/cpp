@@ -4,6 +4,9 @@
 #include "stdafx.h"
 #include "winBrush.h"
 
+#include "Painter.h"
+MyPainter myPainter;
+
 #define MAX_LOADSTRING 100
 
 // 全局变量:
@@ -75,7 +78,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hInstance      = hInstance;
     wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_WINBRUSH));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
-    wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
+	wcex.hbrBackground = (HBRUSH)GetStockObject(GRAY_BRUSH); //(HBRUSH)(COLOR_WINDOW+1);
     wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_WINBRUSH);
     wcex.lpszClassName  = szWindowClass;
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
@@ -147,6 +150,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: 在此处添加使用 hdc 的任何绘图代码...
+			myPainter.Paint(hdc);
             EndPaint(hWnd, &ps);
         }
         break;
