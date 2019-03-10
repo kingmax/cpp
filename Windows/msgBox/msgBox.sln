@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "myWin", "..\myWin\myWin.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winBitmap", "..\winBitmap\winBitmap.vcxproj", "{B5D72846-B318-4122-B18E-1AED2EEC5171}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winBrush", "winBrush\winBrush.vcxproj", "{2D073363-7AD4-4D24-BD9A-316373E4C957}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{B5D72846-B318-4122-B18E-1AED2EEC5171}.Release|x64.Build.0 = Release|x64
 		{B5D72846-B318-4122-B18E-1AED2EEC5171}.Release|x86.ActiveCfg = Release|Win32
 		{B5D72846-B318-4122-B18E-1AED2EEC5171}.Release|x86.Build.0 = Release|Win32
+		{2D073363-7AD4-4D24-BD9A-316373E4C957}.Debug|x64.ActiveCfg = Debug|x64
+		{2D073363-7AD4-4D24-BD9A-316373E4C957}.Debug|x64.Build.0 = Debug|x64
+		{2D073363-7AD4-4D24-BD9A-316373E4C957}.Debug|x86.ActiveCfg = Debug|Win32
+		{2D073363-7AD4-4D24-BD9A-316373E4C957}.Debug|x86.Build.0 = Debug|Win32
+		{2D073363-7AD4-4D24-BD9A-316373E4C957}.Release|x64.ActiveCfg = Release|x64
+		{2D073363-7AD4-4D24-BD9A-316373E4C957}.Release|x64.Build.0 = Release|x64
+		{2D073363-7AD4-4D24-BD9A-316373E4C957}.Release|x86.ActiveCfg = Release|Win32
+		{2D073363-7AD4-4D24-BD9A-316373E4C957}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
