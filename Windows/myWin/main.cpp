@@ -2,6 +2,7 @@
 #include <windowsx.h>
 
 #include "main.h"
+#include <iostream>
 
 #define WIN32_LEAN_AND_MEAN
 
@@ -111,9 +112,62 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
 	switch (msg)
 	{
+		case WM_ACTIVATE:
+		{
+			if (LOWORD(wparam) == WA_CLICKACTIVE)
+			{
+				HWND hPrev = (HWND)lparam;
+				LPTSTR title = new TCHAR[256];
+				//GetWindowText(hPrev, title, 256);
+				int nChars = SendMessage(hPrev, WM_GETTEXT, 256, (LPARAM)title);	//得到的窗口标题是乱码？
+				MessageBox(hwnd,/* L"Yes, I do!"*/title, L"你用鼠标激活了窗口", MB_OK);
+				delete[] title;
+			}
+			if (HIWORD(wparam) == TRUE)
+			{
+				//std::cout << HIWORD(wparam) << std::endl;
+			}
+			break;
+		}
+
+		case WM_SIZE:
+		{
+			LPTSTR txt = new TCHAR[64];
+			//char txt[256];
+			int w = LOWORD(lparam);
+			int h = HIWORD(lparam);
+			PAINTSTRUCT ps;
+			HDC hdc = BeginPaint(hwnd, &ps);
+			wsprintf(txt, L"w = %d, h = %d \0", w, h);
+			//sprintf_s(txt, "w = %d, h = %d \0", w, h);
+			TextOut(hdc, 0, 0, txt, wcslen(txt));
+			//TextOut(hdc, 0, 0, (LPCWSTR)txt, strlen(txt));
+			EndPaint(hwnd, &ps);
+			delete[] txt;
+
+			if (wparam == SIZE_MAXIMIZED)
+			{
+				MessageBox(hwnd, L"窗口最大化了", TEXT("提示"), MB_OK);
+			}
+			break;
+		}
+
+		case WM_MOVE:
+		{
+			LPTSTR str = new TCHAR[64];
+			int x = LOWORD(lparam);
+			int y = HIWORD(lparam);
+			HDC hDC = GetDC(hwnd);
+			wsprintf(str, L"moveX = %d, moveY = %d\0", x, y);
+			TextOut(hDC, 0, 0, str, wcsnlen_s(str, 64));
+			ReleaseDC(hwnd, hDC);
+			delete[] str;
+			break;
+		}
+
 		case WM_CREATE:
 		{
-			
+			break;
 		}
 
 		case WM_COMMAND:
@@ -122,8 +176,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 			int wmID = LOWORD(wparam);
 			switch (wmID)
 			{
+			case ID_FILE_MESSAGE:
+				MessageBox(hwnd, TEXT("This is a message"), TEXT("Caption"), MB_OK);
+				break;
+
 			case ID_FILE_EXIT:
-				DestroyWindow(hwnd);
+				//DestroyWindow(hwnd);
+				PostMessage(hwnd, WM_CLOSE, wparam, lparam);
 				break;
 
 			case ID_HELP_ABOUT:
@@ -140,6 +199,16 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(hwnd, &ps);
 			EndPaint(hwnd, &ps);
+			break;
+		}
+
+		case WM_CLOSE:
+		{
+			int ok = MessageBox(hwnd, L"确定退出？", L"True?", MB_YESNO);
+			if (ok == IDYES)
+			{
+				return DefWindowProc(hwnd, msg, wparam, lparam);
+			}
 			break;
 		}
 
