@@ -10,7 +10,7 @@
 HINSTANCE hInst;
 const LPCWSTR className = L"myWindow";
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
-LRESULT CALLBACK About(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+INT_PTR CALLBACK About(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -107,6 +107,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	return (int)msg.wParam;
 }
 
+//HWND dlg = CreateDialog(hInst, MAKEINTRESOURCE(IDD_DIALOG1), NULL, About);
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -119,7 +120,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 				HWND hPrev = (HWND)lparam;
 				LPTSTR title = new TCHAR[256];
 				//GetWindowText(hPrev, title, 256);
-				int nChars = SendMessage(hPrev, WM_GETTEXT, 256, (LPARAM)title);	//得到的窗口标题是乱码？
+				LRESULT nChars = SendMessage(hPrev, WM_GETTEXT, 256, (LPARAM)title);	//得到的窗口标题是乱码？
 				MessageBox(hwnd,/* L"Yes, I do!"*/title, L"你用鼠标激活了窗口", MB_OK);
 				delete[] title;
 			}
@@ -186,7 +187,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 				break;
 
 			case ID_HELP_ABOUT:
-				DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG1), hwnd, About);
+				DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hwnd, About);
+				//HWND dlg = CreateDialog(hInst, MAKEINTRESOURCE(IDD_DIALOG1), hwnd, About);
+				//ShowWindow(dlg, SW_SHOW);
 				break;
 
 			default:
@@ -227,11 +230,20 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 
 INT_PTR CALLBACK About(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
+	UNREFERENCED_PARAMETER(lparam);
+
 	switch (msg)
 	{
 	case WM_INITDIALOG:
 		return (INT_PTR)TRUE;
 
+	case WM_COMMAND:
+		if (LOWORD(wparam) == IDOK || LOWORD(wparam) == IDCANCEL)
+		{
+			EndDialog(hwnd, LOWORD(wparam));
+			return (INT_PTR)TRUE;
+		}
+		break;
 	}
 	return (INT_PTR)FALSE;
 }
