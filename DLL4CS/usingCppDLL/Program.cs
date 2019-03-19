@@ -16,10 +16,18 @@ namespace usingCppDLL
         [DllImport(@"D:\git\cpp\DLL4CS\x64\Release\dll2.dll", CharSet=CharSet.Auto, SetLastError=true, CallingConvention=CallingConvention.Cdecl)]
         public static extern int fn(string s);
 
+        [DllImport(@"D:\git\cpp\DLL4CS\Release\dll3.dll", CallingConvention=CallingConvention.Cdecl)]
+        public static extern int Test(string s);
+
 
         static void Main(string[] args)
         {
             Console.WriteLine("Writen by C#.");
+
+            int ret3 = Test("Hi, Cpp Dll");
+            Console.WriteLine("ret3 = ");
+            Console.WriteLine(ret3);
+
 
             int ret2 = fn("你好");
             Console.WriteLine("ret2 = {0}", ret2);

@@ -4,4 +4,3 @@ D:\git\cpp\DLL4CS\usingCppDLL\bin\Release\usingCppDLL.pdb
 D:\git\cpp\DLL4CS\usingCppDLL\obj\Release\usingCppDLL.csproj.CoreCompileInputs.cache
 D:\git\cpp\DLL4CS\usingCppDLL\obj\Release\usingCppDLL.exe
 D:\git\cpp\DLL4CS\usingCppDLL\obj\Release\usingCppDLL.pdb
-D:\git\cpp\DLL4CS\usingCppDLL\obj\Release\usingCppDLL.csprojAssemblyReference.cache
