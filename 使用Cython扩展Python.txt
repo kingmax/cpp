@@ -3,6 +3,8 @@
 ref: http://docs.cython.org/en/latest/src/tutorial/cython_tutorial.html
 ref: https://stackoverflow.com/questions/53172601/error-unable-to-find-vcvarsall-bat-when-compiling-cython-code
 
+--START
+
 0.安装Cython: (http://docs.cython.org/en/latest/src/quickstart/install.html)
 	pip install Cython
 
@@ -24,3 +26,5 @@ ref: https://stackoverflow.com/questions/53172601/error-unable-to-find-vcvarsall
 5.使用:(pyd实际上是一个dll文件,用C或C++写的Python Dll)
 	>>> import hello
 	Hello Cython
+
+--END
