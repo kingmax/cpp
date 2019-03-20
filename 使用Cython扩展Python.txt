@@ -1,0 +1,26 @@
+使用Cython扩展Python:
+
+ref: http://docs.cython.org/en/latest/src/tutorial/cython_tutorial.html
+ref: https://stackoverflow.com/questions/53172601/error-unable-to-find-vcvarsall-bat-when-compiling-cython-code
+
+0.安装Cython: (http://docs.cython.org/en/latest/src/quickstart/install.html)
+	pip install Cython
+
+1.安装 Install Microsoft Visual C++ Compiler for Python 2.7 (https://www.microsoft.com/en-us/download/details.aspx?id=44266)
+
+2.写正常python模块文件，另存为*.pyx, 如:hello.pyx:
+	print("Hello Cython")
+	
+3.写setup.py，用于编译:
+	import setuptools
+	from distutils.core import setup
+	from Cython.Build import cythonize
+
+	setup(ext_modules = cythonize("hello.pyx"))
+	
+4.命令行编译:(生成hello.pyd,中间文件hello.c)
+	c:\Python27>python.exe setup.py build_ext --inplace
+	
+5.使用:(pyd实际上是一个dll文件,用C或C++写的Python Dll)
+	>>> import hello
+	Hello Cython
