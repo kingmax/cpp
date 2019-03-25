@@ -1,0 +1,17 @@
+/*
+[DllImport(@"d:\git\cpp\cppDll4cs\Release\cppDll4cs.dll")]
+
+	cpp dll for c# call:
+	1. extern "C" (if for another cpp call, even using extern "C" when dllimport)
+	2. x86 -> 32bit (x64 error!)
+	通过extern "C"使用(函数名不会像C++那样被可能重载改变，同时按C语言方式写,如不使用string而是使用char*)
+	使用x86(32位编译DLL)
+*/
+
+
+// in another cpp program:
+#pragma comment(lib, "cppDll4cs.lib")
+extern "C" //因为dll导出时按此规范，所以导入时也要写上
+{
+	__declspec(dllimport) int test(const char* s);
+}
