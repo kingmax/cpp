@@ -22,7 +22,7 @@ int main()
 	}
 	while(name.length() <= 2);
 	
-	char n[20];
+	char n[100];
 	do
 	{
 		cout << "enter your name again: (q for exit)" << endl;
