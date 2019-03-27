@@ -4,14 +4,14 @@
 
 using namespace std;
 
-void display(vector<int> vec)
+void display(vector<int> &vec)
 {
 	for(int i = 0; i < vec.size(); ++i)
 		cout << vec[i] << ' ';
 	cout << endl;
 }
 
-void swap(int v1, int v2)
+void swap(int &v1, int &v2)
 {
 	int temp = v1;
 	v1 = v2;
@@ -19,7 +19,7 @@ void swap(int v1, int v2)
 }
 
 ofstream out("debug.txt");
-void bubble_sort(vector<int> vec)
+void bubble_sort(vector<int> &vec)
 {
 	for(int i = 0; i < vec.size(); ++i)
 		for(int j = i + 1; j < vec.size(); ++j)
