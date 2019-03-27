@@ -4,10 +4,25 @@
 
 using namespace std;
 
-void display(vector<int> &vec)
+void display(const vector<int> &vec)
 {
 	for(int i = 0; i < vec.size(); ++i)
 		cout << vec[i] << ' ';
+	// vec.emplace(10); //error, since const!
+	cout << endl;
+}
+
+void display(const vector<int> *vec)
+{
+	if(!vec)
+	{
+		cerr << "display(): the vector pointer is 0\n";
+		return;
+	}
+	
+	cout << "display(const vector<int>*) pointer version:\n";
+	for(int i = 0; i < vec->size(); ++i)
+		cout << (*vec)[i] << ' ';
 	cout << endl;
 }
 
@@ -49,6 +64,8 @@ int main()
 	
 	cout << "vector  after sort: ";
 	display(vec);
+	
+	display(&vec); //pointer version
 	
 	return 0;
 }
