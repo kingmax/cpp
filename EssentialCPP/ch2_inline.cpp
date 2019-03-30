@@ -49,7 +49,8 @@ bool fibon_elem(int pos, int &elem)
 
 void print(const vector<int> *pv)
 {
-	for(const auto &e : *pv)
+	//for(const auto &e : *pv)
+	for(auto const &e : *pv)
 		cout << e << ' ';
 	cout << endl;
 }
