@@ -48,10 +48,13 @@ int main()
 	// define function pointer: seq_ptr
 	const vector<int>* (*seq_ptr)(int) = 0;
 	
+	// define funtion pointer array
 	const vector<int>* (*seq_array[])(int) = {
 		fibon_seq, lucas_seq, pell_seq,
 		triangSeq, squareSeq, pent_seq
 	};
+	
+	seq_ptr = seq_array[ns_lucas]; //using array and enum
 	
 	int seq_index = 0;
 	bool next_seq = false;
@@ -60,6 +63,8 @@ int main()
 		seq_ptr = seq_array[++seq_index];
 		// ...
 	}
+	
+	
 	
 	return 0;
 }
