@@ -50,16 +50,28 @@ string removeOnlyMultiComments(const string &prgm)
     string res; 
   
     bool m_cmt = false; 
+	bool isStrStart = false;
+	bool isStrEnd = false;
   
     for (int i=0; i<n; i++) 
-    { 
-        if (m_cmt == true && prgm[i] == '*' && prgm[i+1] == '/') 
+    {	
+		if(prgm[i] == '"' && !isStrStart)
+		{
+			isStrStart = true;
+		}
+		else if(prgm[i] == '"')
+		{
+			isStrStart = false;
+		}
+
+        if ( m_cmt == true && prgm[i] == '*' && prgm[i+1] == '/' && !isStrStart)
             m_cmt = false,  i++; 
         else if (m_cmt) 
             continue; 
-        else if (prgm[i] == '/' && prgm[i+1] == '*') 
+        else if (prgm[i] == '/' && prgm[i+1] == '*' && (prgm[i+2] == '\n' || prgm[i-1] == '\n'))
             m_cmt = true,  i++; 
-        else  res += prgm[i]; 
+        else  
+			res += prgm[i]; 
     } 
     return res; 
 }
