@@ -13,6 +13,9 @@
 #include <Windows.h>
 #include <fileapi.h>
 #include <PathCch.h>
+#include <shellapi.h>
+
+#include "KillProcessByName.h"
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -56,7 +59,8 @@ void Kill3dsMax()
 {
 	try
 	{
-		system(R"(@taskkill / f / im 3dsmax.exe)");
+		//system(R"(@taskkill / f / im 3dsmax.exe)");
+		killProcessByName(L"3dsmax.exe");
 	}
 	catch (const std::exception& e)
 	{
@@ -92,35 +96,35 @@ void LoadThis2010()
 	*/
 
 	//cout << __LINE__ << endl;
-	//system(R"(@rd / s / q "C:\Program Files\Autodesk\3ds Max 2010\plugins\vrayplugins")");
-	fs::remove_all(LR"(C:\Program Files\Autodesk\3ds Max 2010\plugins\vrayplugins)");
-	//system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\plugins\vray*.*")");
-	//system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\plugins\vrender*.*")");
-	DeleteFilesByPattern(LR"(C:\Program Files\Autodesk\3ds Max 2010\plugins\vray*.*)");
-	DeleteFilesByPattern(LR"(C:\Program Files\Autodesk\3ds Max 2010\plugins\vrender*.*)");
+	system(R"(@rd / s / q "C:\Program Files\Autodesk\3ds Max 2010\plugins\vrayplugins" 1>NUL 2>NUL)");
+	//fs::remove_all(LR"(C:\Program Files\Autodesk\3ds Max 2010\plugins\vrayplugins)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\plugins\vray*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\plugins\vrender*.*" 1>NUL 2>NUL)");
+	//DeleteFilesByPattern(LR"(C:\Program Files\Autodesk\3ds Max 2010\plugins\vray*.*)");
+	//DeleteFilesByPattern(LR"(C:\Program Files\Autodesk\3ds Max 2010\plugins\vrender*.*)");
 
-	//system(R"(@rd / s / q "C:\Program Files\Autodesk\3ds Max 2010\scripts\V-Ray")");
-	fs::remove_all(LR"(C:\Program Files\Autodesk\3ds Max 2010\scripts\V-Ray)");
-	//system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\scripts\startup\vray*.*")");
-	//system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\scripts\startup\vrscene*.*")");
-	DeleteFilesByPattern(LR"(C:\Program Files\Autodesk\3ds Max 2010\scripts\startup\vray*.*)");
-	DeleteFilesByPattern(LR"(C:\Program Files\Autodesk\3ds Max 2010\scripts\startup\vrscene*.*)");
+	system(R"(@rd / s / q "C:\Program Files\Autodesk\3ds Max 2010\scripts\V-Ray" 1>NUL 2>NUL)");
+	//fs::remove_all(LR"(C:\Program Files\Autodesk\3ds Max 2010\scripts\V-Ray)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\scripts\startup\vray*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\scripts\startup\vrscene*.*" 1>NUL 2>NUL)");
+	//DeleteFilesByPattern(LR"(C:\Program Files\Autodesk\3ds Max 2010\scripts\startup\vray*.*)");
+	//DeleteFilesByPattern(LR"(C:\Program Files\Autodesk\3ds Max 2010\scripts\startup\vrscene*.*)");
 
-	/*system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\vray*.*")");
-	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\dte_wrapper*.*")");
-	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\HairVrPrims2010*.*")");
-	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\libmmd*.*")");
-	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\cgauth*.*")");
-	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\svml_dispmd*.*")");*/
-	DeleteFilesByPattern(LR"(C:\Program Files\Autodesk\3ds Max 2010\vray*.*)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\vray*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\dte_wrapper*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\HairVrPrims2010*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\libmmd*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\cgauth*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2010\svml_dispmd*.*" 1>NUL 2>NUL)");
+	/*DeleteFilesByPattern(LR"(C:\Program Files\Autodesk\3ds Max 2010\vray*.*)");
 	DeleteFilesByPattern(LR"(C:\Program Files\Autodesk\3ds Max 2010\dte_wrapper*.*)");
 	DeleteFilesByPattern(LR"(C:\Program Files\Autodesk\3ds Max 2010\HairVrPrims2010*.*)");
 	DeleteFilesByPattern(LR"(C:\Program Files\Autodesk\3ds Max 2010\libmmd*.*)");
 	DeleteFilesByPattern(LR"(C:\Program Files\Autodesk\3ds Max 2010\cgauth*.*)");
-	DeleteFilesByPattern(LR"(C:\Program Files\Autodesk\3ds Max 2010\svml_dispmd*.*)");
+	DeleteFilesByPattern(LR"(C:\Program Files\Autodesk\3ds Max 2010\svml_dispmd*.*)");*/
 
-	//system(R"(@rd / s / q "C:\Program Files\Chaos Group\V-Ray")");
-	fs::remove_all(LR"(C:\Program Files\Chaos Group\V-Ray)");
+	system(R"(@rd / s / q "C:\Program Files\Chaos Group\V-Ray" 1>NUL 2>NUL)");
+	//fs::remove_all(LR"(C:\Program Files\Chaos Group\V-Ray)");
 
 	//system(R"(@xcopy "%~dp03ds Max 2010" "C:\Program Files\Autodesk\3ds Max 2010" / S / Y / I)");
 	CopyDirTo(L"3ds Max 2010", fs::path(LR"(C:\Program Files\Autodesk\3ds Max 2010)"));
@@ -142,7 +146,9 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	//Kill3dsMax();
+	::ShowWindow(::GetConsoleWindow(), SW_HIDE);
+
+	Kill3dsMax();
 
 	string ver(argv[1]);
 	string msg = "LoadThis for 3dsMax " + ver;
@@ -161,6 +167,11 @@ int main(int argc, char* argv[])
 	}
 
 	cout << "DONE!" << endl;
+	/*for (size_t i = 0; i < 1000; i++)
+	{
+		cout << endl;
+	}*/
+
 	return 0;
 }
 
