@@ -1,24 +1,6 @@
-﻿// LoadThis.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
-//
-
-#include "pch.h"
-#include <iostream>
-#include <string>
-//cpp 17
-#include <filesystem>
-
-#include <cstdlib>
-#include <process.h>
-
-#include <Windows.h>
-#include <fileapi.h>
-#include <PathCch.h>
-#include <shellapi.h>
-
+﻿#include "pch.h"
+#include "LoadThis.h"
 #include "KillProcessByName.h"
-
-using namespace std;
-namespace fs = std::filesystem;
 
 void DeleteFilesByPattern(const wchar_t *filenamePattern)
 {
@@ -133,55 +115,65 @@ void LoadThis2010()
 	//cout << __FILE__ << endl;
 }
 
-void usage()
+void LoadThis2011()
 {
-	cout << "LoadThis 3dsMaxVersion (2010..2020)" << endl;
+	/*
+	@echo %~dpn0
+	@taskkill /f /im 3dsmax.exe 1>NUL 2>NUL
+
+	@rd /s /q "C:\Program Files\Autodesk\3ds Max 2011\plugins\vrayplugins" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2011\plugins\vray*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2011\plugins\vrender*.*" 1>NUL 2>NUL
+
+	@rd /s /q "C:\Program Files\Autodesk\3ds Max 2011\scripts\V-Ray" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2011\scripts\startup\vray*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2011\scripts\startup\vrscene*.*" 1>NUL 2>NUL
+
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2011\vray*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2011\dte_wrapper*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2011\HairVrPrims2010*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2011\libmmd*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2011\cgauth*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2011\svml_dispmd*.*" 1>NUL 2>NUL
+
+	@xcopy "%~dp03ds Max 2011" "C:\Program Files\Autodesk\3ds Max 2011" /S /Y /I 1>NUL 2>NUL
+
+	@rd /s /q "C:\Program Files\Chaos Group\V-Ray" 1>NUL 2>NUL
+	@xcopy "%~dp0V-Ray" "C:\Program Files\Chaos Group\V-Ray" /S /Y /I 1>NUL 2>NUL
+
+	@"C:\Program Files\Autodesk\3ds Max 2011\3dsmax.exe"
+	*/
+
+	system(R"(@rd / s / q "C:\Program Files\Autodesk\3ds Max 2011\plugins\vrayplugins" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2011\plugins\vray*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2011\plugins\vrender*.*" 1>NUL 2>NUL)");
+
+	system(R"(@rd / s / q "C:\Program Files\Autodesk\3ds Max 2011\scripts\V-Ray" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2011\scripts\startup\vray*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2011\scripts\startup\vrscene*.*" 1>NUL 2>NUL)");
+
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2011\cgauth*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2011\dte_wrapper*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2011\glslang*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2011\glvm*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2011\HairVrPrims2011*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2011\libmmd*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2011\svml_dispmd*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2011\vray*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2011\vrcompilerbackend_msl11a*.*" 1>NUL 2>NUL)");
+	
+	system(R"(@rd / s / q "C:\Program Files\Chaos Group\V-Ray" 1>NUL 2>NUL)");
+
+	CopyDirTo(L"3ds Max 2011", fs::path(LR"(C:\Program Files\Autodesk\3ds Max 2011)"));
+	CopyDirTo(L"V-Ray", fs::path(LR"(C:\Program Files\Chaos Group\V-Ray)"));
 }
 
-int main(int argc, char* argv[])
-{
-	if (argc < 2)
-	{
-		usage();
-		return -1;
-	}
-
-	::ShowWindow(::GetConsoleWindow(), SW_HIDE);
-
-	Kill3dsMax();
-
-	string ver(argv[1]);
-	string msg = "LoadThis for 3dsMax " + ver;
-	cout << msg << endl;
-
-	if (ver == "2010")
-	{
-		try
-		{
-			LoadThis2010();
-		}
-		catch (const std::exception& e)
-		{
-			cout << e.what() << endl;
-		}
-	}
-
-	cout << "DONE!" << endl;
-	/*for (size_t i = 0; i < 1000; i++)
-	{
-		cout << endl;
-	}*/
-
-	return 0;
-}
-
-// 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
-// 调试程序: F5 或调试 >“开始调试”菜单
-
-// 入门提示: 
-//   1. 使用解决方案资源管理器窗口添加/管理文件
-//   2. 使用团队资源管理器窗口连接到源代码管理
-//   3. 使用输出窗口查看生成输出和其他消息
-//   4. 使用错误列表窗口查看错误
-//   5. 转到“项目”>“添加新项”以创建新的代码文件，或转到“项目”>“添加现有项”以将现有代码文件添加到项目
-//   6. 将来，若要再次打开此项目，请转到“文件”>“打开”>“项目”并选择 .sln 文件
+void LoadThis2012() {}
+void LoadThis2013() {}
+void LoadThis2014() {}
+void LoadThis2015() {}
+void LoadThis2016() {}
+void LoadThis2017() {}
+void LoadThis2018() {}
+void LoadThis2019() {}
+void LoadThis2020() {}
