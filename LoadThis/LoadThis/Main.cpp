@@ -50,6 +50,18 @@ int main(int argc, char* argv[])
 		}
 	}
 
+	if (ver == "2012")
+	{
+		try
+		{
+			LoadThis2012();
+		}
+		catch (const std::exception& e)
+		{
+			cout << e.what() << endl;
+		}
+	}
+
 	cout << "DONE!" << endl;
 	return 0;
 }

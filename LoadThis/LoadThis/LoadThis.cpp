@@ -37,6 +37,28 @@ void CopyDirTo(const wchar_t *relativeDirName, const fs::path &destDir)
 	}
 }
 
+void CopyPluginIni(const WCHAR *relativeDirName_3dsMaxVersion)
+{
+	fs::path src = fs::current_path();
+	src += L"\\";
+	src += relativeDirName_3dsMaxVersion;
+	src += L"\\plugin.ini";
+
+	fs::path dst(R"(C:\Program Files\Autodesk\)");
+	dst += relativeDirName_3dsMaxVersion;
+	if (!fs::exists(dst))
+	{
+		fs::create_directories(dst);
+	}
+	dst += L"\\plugin.ini";
+
+	if (fs::exists(src))
+	{
+		fs::copy(src, dst, fs::copy_options::recursive | fs::copy_options::overwrite_existing);
+	}
+	cout << src << " -> " << dst << endl;
+}
+
 void Kill3dsMax()
 {
 	try
@@ -168,7 +190,119 @@ void LoadThis2011()
 	CopyDirTo(L"V-Ray", fs::path(LR"(C:\Program Files\Chaos Group\V-Ray)"));
 }
 
-void LoadThis2012() {}
+void ClearVray_15to24_2012()
+{
+	system(R"(@rd / s / q "C:\Program Files\Autodesk\3ds Max 2012\plugins\vrayplugins" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2012\plugins\vray*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2012\plugins\vrender*.*" 1>NUL 2>NUL)");
+
+	system(R"(@rd / s / q "C:\Program Files\Autodesk\3ds Max 2012\scripts\V-Ray" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2012\scripts\startup\vray*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2012\scripts\startup\vrscene*.*" 1>NUL 2>NUL)");
+
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2012\cgauth*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2012\dte_wrapper*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2012\glslang*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2012\glvm*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2012\HairVrPrims2012*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2012\libmmd*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2012\svml_dispmd*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2012\vray*.*" 1>NUL 2>NUL)");
+	system(R"(@del / f / s / q "C:\Program Files\Autodesk\3ds Max 2012\vrcompilerbackend_msl12*.*" 1>NUL 2>NUL)");
+
+	system(R"(@rd / s / q "C:\Program Files\Chaos Group\V-Ray" 1>NUL 2>NUL)");
+}
+
+void LoadThis2012()
+{
+	//VRay1.5~2.5 (<VRay3.x)
+	/*
+	@echo %~dpn0
+	@taskkill /f /im 3dsmax.exe 1>NUL 2>NUL
+
+	@rd /s /q "C:\Program Files\Autodesk\3ds Max 2012\plugins\vrayplugins" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\plugins\vray*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\plugins\vrender*.*" 1>NUL 2>NUL
+
+	@rd /s /q "C:\Program Files\Autodesk\3ds Max 2012\scripts\V-Ray" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\scripts\startup\vray*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\scripts\startup\vrscene*.*" 1>NUL 2>NUL
+
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\cgauth*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\dte_wrapper*.*" 1>NUL 2>NUL
+	rem V_Ray_Adv_2_40_03
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\glslang*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\glvm*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\HairVrPrims2012*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\libmmd*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\svml_dispmd*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\vray*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\vrcompilerbackend_msl12*.*" 1>NUL 2>NUL
+
+	@rd /s /q "C:\Program Files\Chaos Group\V-Ray" 1>NUL 2>NUL
+
+	@xcopy "%~dp03ds Max 2012" "C:\Program Files\Autodesk\3ds Max 2012" /S /Y /I 1>NUL 2>NUL
+	@xcopy "%~dp0V-Ray" "C:\Program Files\Chaos Group\V-Ray" /S /Y /I 1>NUL 2>NUL
+
+	@"C:\Program Files\Autodesk\3ds Max 2012\3dsmax.exe"
+	*/
+
+	ClearVray_15to24_2012();
+
+	CopyDirTo(L"3ds Max 2012", fs::path(LR"(C:\Program Files\Autodesk\3ds Max 2012)"));
+	CopyDirTo(L"V-Ray", fs::path(LR"(C:\Program Files\Chaos Group\V-Ray)"));
+}
+
+void LoadThis2012_VR3()
+{
+	/*
+	@echo SetEnv.bat for VRay3~4 %~dpn0
+	@taskkill /f /im 3dsmax.exe 1>NUL 2>NUL
+
+	@rd /s /q "C:\Program Files\Autodesk\3ds Max 2012\plugins\vrayplugins" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\plugins\vray*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\plugins\vrender*.*" 1>NUL 2>NUL
+
+	@rd /s /q "C:\Program Files\Autodesk\3ds Max 2012\scripts\V-Ray" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\scripts\startup\vray*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\scripts\startup\vrscene*.*" 1>NUL 2>NUL
+
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\cgauth*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\dte_wrapper*.*" 1>NUL 2>NUL
+	rem V_Ray_Adv_2_40_03
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\glslang*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\glvm*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\HairVrPrims2010*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\libmmd*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\svml_dispmd*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\vray*.*" 1>NUL 2>NUL
+	@del /f /s /q "C:\Program Files\Autodesk\3ds Max 2012\vrcompilerbackend_msl12*.*" 1>NUL 2>NUL
+
+	@rd /s /q "C:\Program Files\Chaos Group\V-Ray" 1>NUL 2>NUL
+
+	@SETX PATH "%~dp03ds Max 2012;%~dp0V-Ray\RT for 3ds Max 2012 for x64\bin;" 1>NUL 2>NUL
+	@SETX VRAY32_RT_FOR_3DSMAX2012_MAIN_x64 "%~dp0V-Ray\RT for 3ds Max 2012 for x64\bin" 1>NUL 2>NUL
+	@SETX VRAY32_RT_FOR_3DSMAX2012_PLUGINS_x64 "%~dp0V-Ray\RT for 3ds Max 2012 for x64\bin\plugins" 1>NUL 2>NUL
+	@SETX VRAY_OSL_PATH_3DSMAX2012_x64 "%~dp0V-Ray\3dsmax 2012 for x64\opensl" 1>NUL 2>NUL
+
+
+	@copy /Y "%~dp03ds Max 2012\plugin.ini" "C:\Program Files\Autodesk\3ds Max 2012\plugin.ini" 1>NUL 2>NUL
+
+	@rem move to LoadThis.bat :: call SetEnv.bat first, then run 3dsmax.exe
+	@rem "C:\Program Files\Autodesk\3ds Max 2012\3dsmax.exe"
+	*/
+
+	ClearVray_15to24_2012();
+
+	system(R"(@SETX PATH "%~dp03ds Max 2012;%~dp0V-Ray\RT for 3ds Max 2012 for x64\bin;" 1>NUL 2>NUL)");
+	system(R"(@SETX VRAY32_RT_FOR_3DSMAX2012_MAIN_x64 "%~dp0V-Ray\RT for 3ds Max 2012 for x64\bin" 1>NUL 2>NUL)");
+	system(R"(@SETX VRAY32_RT_FOR_3DSMAX2012_PLUGINS_x64 "%~dp0V-Ray\RT for 3ds Max 2012 for x64\bin\plugins" 1>NUL 2>NUL)");
+	system(R"(@SETX VRAY_OSL_PATH_3DSMAX2012_x64 "%~dp0V-Ray\3dsmax 2012 for x64\opensl" 1>NUL 2>NUL)");
+
+	system(R"(@copy /Y "C:\dps\2012\V_Ray_Adv_3_20_02\3ds Max 2012\plugin.ini" "C:\Program Files\Autodesk\3ds Max 2012\plugin.ini" 1>NUL 2>NUL)");
+	//CopyPluginIni(L"3ds Max 2012");
+}
+
 void LoadThis2013() {}
 void LoadThis2014() {}
 void LoadThis2015() {}

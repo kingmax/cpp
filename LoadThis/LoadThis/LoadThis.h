@@ -23,7 +23,11 @@ void Kill3dsMax();
 
 void LoadThis2010();
 void LoadThis2011();
+void ClearVray_15to24_2012();
 void LoadThis2012();
+
+void LoadThis2012_VR3();
+
 void LoadThis2013();
 void LoadThis2014();
 void LoadThis2015();
