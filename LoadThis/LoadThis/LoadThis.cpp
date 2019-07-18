@@ -2,6 +2,38 @@
 #include "LoadThis.h"
 #include "KillProcessByName.h"
 
+//如果当前目录下存在名为VR3的文件,直接返回true
+bool IsVRay3()
+{
+	fs::path cd = fs::current_path();
+	cd += L"\\VR3";
+	if (fs::exists(cd))
+	{
+		cout << "exists VR3 file -> " << cd << endl;
+		return true;
+	}
+
+	// C:\dps\2012\V_Ray_Adv_3_20_02
+	//string p = fs::current_path().string();
+	//string::size_type pos = p.rfind("V_Ray_Adv_");
+	//if (pos != string::npos)
+	//{
+	//	string vray_version = p.substr(pos);
+	//	cout << "vray_version is " << vray_version << endl;
+	//	for (auto &c : vray_version)
+	//	{
+	//		// cout << c << ',';
+	//		// first digit is 3
+	//		if (isdigit(c) && c == '3')
+	//		{
+	//			return true;
+	//		}
+	//	}
+	//}
+
+	return false;
+}
+
 void DeleteFilesByPattern(const wchar_t *filenamePattern)
 {
 	fs::path path(filenamePattern);
@@ -213,7 +245,7 @@ void ClearVray_15to24_2012()
 	system(R"(@rd / s / q "C:\Program Files\Chaos Group\V-Ray" 1>NUL 2>NUL)");
 }
 
-void LoadThis2012()
+void LoadThis2012_1_2()
 {
 	//VRay1.5~2.5 (<VRay3.x)
 	/*
@@ -251,6 +283,31 @@ void LoadThis2012()
 
 	CopyDirTo(L"3ds Max 2012", fs::path(LR"(C:\Program Files\Autodesk\3ds Max 2012)"));
 	CopyDirTo(L"V-Ray", fs::path(LR"(C:\Program Files\Chaos Group\V-Ray)"));
+}
+
+// maxFolder = 3ds Max 2012
+void SetEnv4VRay3_2012(string maxFolder, string vrFolder/*="V-Ray"*/)
+{
+	string _3dsMax = fs::path(fs::current_path() / maxFolder).string();
+	string vray = fs::path(fs::current_path() / vrFolder).string();
+
+	string cmd = "@SETX PATH \"" + _3dsMax + ";" + vray + "\\RT for " + maxFolder + " for x64\\bin;\"" + " 1>NUL 2>NUL";
+	//cout << cmd << endl;
+	system(cmd.c_str());
+	cmd = "@SETX VRAY32_RT_FOR_3DSMAX2012_MAIN_x64 \"" + vray + "\\RT for " + maxFolder + " for x64\\bin;\"" + " 1>NUL 2>NUL";
+	//cout << cmd << endl;
+	system(cmd.c_str());
+	cmd = "@SETX VRAY32_RT_FOR_3DSMAX2012_PLUGINS_x64 \"" + vray + "\\RT for " + maxFolder + " for x64\\bin\\plugins;\"" + " 1>NUL 2>NUL";
+	//cout << cmd << endl;
+	system(cmd.c_str());
+	cmd = "@SETX VRAY_OSL_PATH_3DSMAX2012_x64 \"" + vray + "\\3dsmax 2012 for x64\\opensl\" 1> NUL 2> NUL";
+	//cout << cmd << endl;
+	system(cmd.c_str());
+
+	/*system(R"(@SETX PATH "%~dp03ds Max 2012;%~dp0V-Ray\RT for 3ds Max 2012 for x64\bin;" 1>NUL 2>NUL)");
+	system(R"(@SETX VRAY32_RT_FOR_3DSMAX2012_MAIN_x64 "%~dp0V-Ray\RT for 3ds Max 2012 for x64\bin" 1>NUL 2>NUL)");
+	system(R"(@SETX VRAY32_RT_FOR_3DSMAX2012_PLUGINS_x64 "%~dp0V-Ray\RT for 3ds Max 2012 for x64\bin\plugins" 1>NUL 2>NUL)");
+	system(R"(@SETX VRAY_OSL_PATH_3DSMAX2012_x64 "%~dp0V-Ray\3dsmax 2012 for x64\opensl" 1>NUL 2>NUL)");*/
 }
 
 void LoadThis2012_VR3()
@@ -294,13 +351,28 @@ void LoadThis2012_VR3()
 
 	ClearVray_15to24_2012();
 
-	system(R"(@SETX PATH "%~dp03ds Max 2012;%~dp0V-Ray\RT for 3ds Max 2012 for x64\bin;" 1>NUL 2>NUL)");
+	/*system(R"(@SETX PATH "%~dp03ds Max 2012;%~dp0V-Ray\RT for 3ds Max 2012 for x64\bin;" 1>NUL 2>NUL)");
 	system(R"(@SETX VRAY32_RT_FOR_3DSMAX2012_MAIN_x64 "%~dp0V-Ray\RT for 3ds Max 2012 for x64\bin" 1>NUL 2>NUL)");
 	system(R"(@SETX VRAY32_RT_FOR_3DSMAX2012_PLUGINS_x64 "%~dp0V-Ray\RT for 3ds Max 2012 for x64\bin\plugins" 1>NUL 2>NUL)");
-	system(R"(@SETX VRAY_OSL_PATH_3DSMAX2012_x64 "%~dp0V-Ray\3dsmax 2012 for x64\opensl" 1>NUL 2>NUL)");
+	system(R"(@SETX VRAY_OSL_PATH_3DSMAX2012_x64 "%~dp0V-Ray\3dsmax 2012 for x64\opensl" 1>NUL 2>NUL)");*/
 
-	system(R"(@copy /Y "C:\dps\2012\V_Ray_Adv_3_20_02\3ds Max 2012\plugin.ini" "C:\Program Files\Autodesk\3ds Max 2012\plugin.ini" 1>NUL 2>NUL)");
-	//CopyPluginIni(L"3ds Max 2012");
+	SetEnv4VRay3_2012("3ds Max 2012");
+
+	//system(R"(@copy /Y "C:\dps\2012\V_Ray_Adv_3_20_02\3ds Max 2012\plugin.ini" "C:\Program Files\Autodesk\3ds Max 2012\plugin.ini" 1>NUL 2>NUL)");
+	CopyPluginIni(L"3ds Max 2012");
+}
+
+void LoadThis2012()
+{
+	if (IsVRay3())
+	{
+		cout << "LoadThis2012 for VRay3.x" << endl;
+		LoadThis2012_VR3();
+	}
+	else
+	{
+		LoadThis2012_1_2();
+	}
 }
 
 void LoadThis2013() {}

@@ -15,6 +15,7 @@
 using namespace std;
 namespace fs = std::filesystem;
 
+bool IsVRay3();
 
 void DeleteFilesByPattern(const wchar_t *filenamePattern);
 void CopyDirTo(const wchar_t *relativeDirName, const fs::path &destDir);
@@ -25,7 +26,8 @@ void LoadThis2010();
 void LoadThis2011();
 void ClearVray_15to24_2012();
 void LoadThis2012();
-
+// maxFolder = 3ds Max 2012
+void SetEnv4VRay3_2012(string maxFolder, string vrFolder = "V-Ray");
 void LoadThis2012_VR3();
 
 void LoadThis2013();
