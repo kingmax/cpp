@@ -4,3 +4,4 @@ d:\git\cpp\cppDll4cs\csConsoleApp\obj\Release\csConsoleApp.csproj.CoreCompileInp
 d:\git\cpp\cppDll4cs\csConsoleApp\obj\Release\csConsoleApp.exe
 d:\git\cpp\cppDll4cs\csConsoleApp\obj\Release\csConsoleApp.pdb
 d:\git\cpp\cppDll4cs\csConsoleApp\bin\Release\csConsoleApp.exe.config
+D:\git\cpp\cppDll4cs\csConsoleApp\obj\Release\csConsoleApp.csprojAssemblyReference.cache
