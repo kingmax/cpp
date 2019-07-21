@@ -8,11 +8,11 @@ namespace csConsoleApp
 {
     class Program
     {
-        [DllImport(@"d:\git\cpp\cppDll4cs\Release\cppDll4cs.dll")]
+        [DllImport(@"cppDll4cs.dll")]
         //[DllImport(@"d:\git\cpp\cppDll4cs\x64\Release\cppDll4cs.dll")]
         public static extern int add(int a, int b);
 
-        [DllImport(@"D:\git\cpp\cppDll4cs\Release\cppDll4cs.dll", EntryPoint ="test")]
+        [DllImport(@"cppDll4cs.dll", EntryPoint ="test")]
         //[DllImport(@"D:\git\cpp\cppDll4cs\x64\Release\cppDll4cs.dll", EntryPoint ="test")]
         public static extern int Test(string s);
         //public static extern int test([MarshalAs(UnmanagedType.LPStr)] string s);

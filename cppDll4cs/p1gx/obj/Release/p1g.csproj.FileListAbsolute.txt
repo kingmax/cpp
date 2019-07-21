@@ -1,0 +1,11 @@
+D:\git\cpp\cppDll4cs\plg2\bin\Release\p1g.pdb
+D:\git\cpp\cppDll4cs\plg2\obj\Release\p1g.csproj.CoreCompileInputs.cache
+D:\git\cpp\cppDll4cs\plg2\obj\Release\p1g.pdb
+D:\git\cpp\cppDll4cs\plg2\bin\Release\p1g.dll
+D:\git\cpp\cppDll4cs\plg2\obj\Release\p1g.dll
+D:\git\cpp\cppDll4cs\p1g\bin\Release\p1g.dll
+D:\git\cpp\cppDll4cs\p1g\bin\Release\p1g.pdb
+D:\git\cpp\cppDll4cs\p1g\obj\Release\p1g.csprojAssemblyReference.cache
+D:\git\cpp\cppDll4cs\p1g\obj\Release\p1g.csproj.CoreCompileInputs.cache
+D:\git\cpp\cppDll4cs\p1g\obj\Release\p1g.dll
+D:\git\cpp\cppDll4cs\p1g\obj\Release\p1g.pdb
