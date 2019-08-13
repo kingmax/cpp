@@ -10,6 +10,18 @@ void usage()
 
 int main(int argc, char* argv[])
 {
+	////////////////////temp testing
+	fs::path cd = fs::current_path();
+	cout << cd << endl;
+	const string vr = cd.filename().string(); // "V_Ray_Next__update_1_1";
+	cout << vr << endl;
+	cout << "Is VRay 3? " << (vr.find("V_Ray_Adv_3")==0 ? "Yes" : "No") << endl;
+	cout << "Is VRay 4? " << (vr.find("V_Ray_Next")==0 ? "Yes" : "No") << endl;
+	system("pause");
+	return 0;
+	////////////////////end temp testing
+
+
 	
 	if (argc < 2)
 	{

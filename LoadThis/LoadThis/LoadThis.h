@@ -15,7 +15,14 @@
 using namespace std;
 namespace fs = std::filesystem;
 
+extern const string path_env;
+// defined in LoadThis.cpp
+// = R"(C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Python27;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files (x86)\Autodesk\Backburner\;)";
+
+bool SetPermanentEnvironmentVariable(LPCTSTR value, LPCTSTR data);
+
 bool IsVRay3();
+bool IsVRay4();
 
 void DeleteFilesByPattern(const wchar_t *filenamePattern);
 void CopyDirTo(const wchar_t *relativeDirName, const fs::path &destDir);
@@ -29,6 +36,8 @@ void LoadThis2012();
 // maxFolder = 3ds Max 2012
 void SetEnv4VRay3_2012(string maxFolder, string vrFolder = "V-Ray");
 void LoadThis2012_VR3();
+
+
 
 void LoadThis2013();
 void LoadThis2014();

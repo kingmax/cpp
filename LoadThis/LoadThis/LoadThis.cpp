@@ -2,6 +2,44 @@
 #include "LoadThis.h"
 #include "KillProcessByName.h"
 
+const string path_env = R"(C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Python27;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files (x86)\Autodesk\Backburner\;)";
+
+// https://stackoverflow.com/questions/5246046/how-to-add-environment-variable-in-c
+bool SetPermanentEnvironmentVariable(LPCTSTR value, LPCTSTR data)
+{
+	/*
+		LPCTSTR envVar = TEXT("MY_ENV");
+		LPCTSTR envVal = TEXT("MY_VAL");
+
+		if (SetPermanentEnvironmentVariable(envVar, envVal))
+		{
+			cout << "set env MY_ENV=MY_VAL ok" << endl;
+		}
+		else
+		{
+			cout << "set env MY_ENV=MY_VAL failed" << endl;
+		}
+	*/
+
+	HKEY hKey;
+	LPCTSTR keyPath = TEXT("System\\CurrentControlSet\\Control\\Session Manager\\Environment");
+	LSTATUS lOpenStatus = RegOpenKeyEx(HKEY_LOCAL_MACHINE, keyPath, 0, KEY_ALL_ACCESS, &hKey);
+	if (lOpenStatus == ERROR_SUCCESS)
+	{
+		// https://blog.csdn.net/hczhiyue/article/details/6248229 sizeof?
+		LSTATUS lSetStatus = RegSetValueEx(hKey, value, 0, REG_SZ, (LPBYTE)data, /*strlen(data)*/lstrlen(data) + 1);
+		RegCloseKey(hKey);
+
+		if (lSetStatus == ERROR_SUCCESS)
+		{
+			SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0, (LPARAM)"Environment", SMTO_BLOCK, 100, NULL);
+			return true;
+		}
+	}
+
+	return false;
+}
+
 //如果当前目录下存在名为VR3的文件,直接返回true
 bool IsVRay3()
 {
@@ -30,6 +68,29 @@ bool IsVRay3()
 	//		}
 	//	}
 	//}
+
+	return false;
+}
+
+bool IsVRay4()
+{
+	 // C:\dps\2015\V_Ray_Next__update_1_1, C:\dps\2015\V_Ray_Next__update_2 或者 C:\dps\2016\V_Ray_Adv_4_10_02
+	string p = fs::current_path().string();
+	string::size_type pos = p.rfind("V_Ray_Adv_");
+	if (pos != string::npos)
+	{
+		string vray_version = p.substr(pos);
+		cout << "vray_version is " << vray_version << endl;
+		for (auto &c : vray_version)
+		{
+			// cout << c << ',';
+			// first digit is 3
+			if (isdigit(c) && c == '3')
+			{
+				return true;
+			}
+		}
+	}
 
 	return false;
 }
@@ -374,6 +435,29 @@ void LoadThis2012()
 		LoadThis2012_1_2();
 	}
 }
+
+//////////////////////////////////// 从2013开始，使用新的算法，针对VRay2~3 与 VRay Next (VRay4), 仅通过环境变量与ini文件方式实现
+// VRay2~3:
+//@SET PATH = %~dp03ds Max 2013; %~dp0V - Ray\RT for 3ds Max 2013 for x64\bin; %PATH%
+//@rem SET VRAY24_RT_FOR_3DSMAX2013_MAIN_x64 = %~dp0V - Ray\RT for 3ds Max 2013 for x64\bin
+//@rem SET VRAY24_RT_FOR_3DSMAX2013_PLUGINS_x64 = %~dp0V - Ray\RT for 3ds Max 2013 for x64\bin\plugins
+//@REM SET VRAY_OSL_PATH_3DSMAX2014_x64 = %~dp0Program Files\Chaos Group\V - Ray\RT for 3ds Max 2014 for x64\opensl
+//
+//@"C:\Program Files\Autodesk\3ds Max 2013\3dsmax.exe" -p "%~dp03ds Max 2013\en - US\plugin.ini"
+//
+//
+// VRay4:
+//@rem SET PATH = %~dp03ds Max 2013; %~dp0V - Ray\RT for 3ds Max 2013 for x64\bin; %PATH%
+//@SET PATH = %~dp03ds Max 2013; %~dp0V - Ray\3ds Max 2013\bin; %PATH%
+//REM @SET VRAY4_FOR_3DSMAX2013_MAIN = %~dp0V - Ray\3ds Max 2013\bin
+//REM @SET VRAY4_FOR_3DSMAX2013_PLUGINS = %~dp0V - Ray\3ds Max 2013\bin\plugins
+//REM @SET VRAY_MDL_PATH_3DSMAX2013 = %~dp0V - Ray\3ds Max 2013\mdl
+//REM @SET VRAY_OSL_PATH_3DSMAX2013 = %~dp0V - Ray\3ds Max 2013\opensl
+//
+//@"C:\Program Files\Autodesk\3ds Max 2013\3dsmax.exe" -p "%~dp03ds Max 2013\en - US\plugin.ini"
+////////////////////////////////////
+
+
 
 void LoadThis2013() {}
 void LoadThis2014() {}
