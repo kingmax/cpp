@@ -11,14 +11,38 @@ void usage()
 int main(int argc, char* argv[])
 {
 	////////////////////temp testing
-	fs::path cd = fs::current_path();
-	cout << cd << endl;
-	const string vr = cd.filename().string(); // "V_Ray_Next__update_1_1";
-	cout << vr << endl;
-	cout << "Is VRay 3? " << (vr.find("V_Ray_Adv_3")==0 ? "Yes" : "No") << endl;
-	cout << "Is VRay 4? " << (vr.find("V_Ray_Next")==0 ? "Yes" : "No") << endl;
-	system("pause");
-	return 0;
+	//fs::path cd = fs::current_path();
+	//cout << cd << endl;
+	//const string vr = cd.filename().string(); // "V_Ray_Next__update_1_1";
+	//cout << vr << endl;
+	////cout << "Is VRay 3? " << (vr.find("V_Ray_Adv_3")==0 ? "Yes" : "No") << endl;
+	////cout << "Is VRay 4? " << (vr.find("V_Ray_Next")==0 ? "Yes" : "No") << endl;
+	//cout << "IsVRay3 ? " << IsVRay3() << endl;
+	//cout << "IsVRay4 ? " << IsVRay4() << endl;
+
+	//string path = (cd / "3ds Max 2013;").string();
+	//cout << path << endl;
+	//if (IsVRay4())
+	//{
+	//	path += (cd / "V-Ray\\3ds Max 2013\\bin;").string();
+	//}
+	//else
+	//{
+	//	path += (cd / "V-Ray\\RT for 3ds Max 2013 for x64\\bin;").string();
+	//}
+	//cout << path << endl;
+	//path += path_env;
+	//cout << path << endl;
+
+	//cout << strlen(path_env.c_str()) << endl;
+	//cout << path_env << endl;
+	//wstring ws;
+	//ws.assign(path_env.begin(), path_env.end());
+	//wcout << ws << endl;
+	//cout << lstrlen(ws.c_str()) << endl;
+	//cout << sizeof(ws) << endl;
+	//system("pause");
+	//return 0;
 	////////////////////end temp testing
 
 
@@ -68,6 +92,18 @@ int main(int argc, char* argv[])
 		try
 		{
 			LoadThis2012();
+		}
+		catch (const std::exception& e)
+		{
+			cout << e.what() << endl;
+		}
+	}
+
+	if (ver == "2013")
+	{
+		try
+		{
+			LoadThis2013();
 		}
 		catch (const std::exception& e)
 		{

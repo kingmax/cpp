@@ -2,10 +2,12 @@
 #include "LoadThis.h"
 #include "KillProcessByName.h"
 
-const string path_env = R"(C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Python27;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files (x86)\Autodesk\Backburner\;)";
+//C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Python27;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files (x86)\Autodesk\Backburner\
+
+const string path_env = R"(C:\Windows\system32;C:\Python27;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files (x86)\Autodesk\Backburner\;)";
 
 // https://stackoverflow.com/questions/5246046/how-to-add-environment-variable-in-c
-bool SetPermanentEnvironmentVariable(LPCTSTR value, LPCTSTR data)
+bool SetPermanentEnvironmentVariable(LPCTSTR envName, LPCTSTR envVal)
 {
 	/*
 		LPCTSTR envVar = TEXT("MY_ENV");
@@ -27,7 +29,8 @@ bool SetPermanentEnvironmentVariable(LPCTSTR value, LPCTSTR data)
 	if (lOpenStatus == ERROR_SUCCESS)
 	{
 		// https://blog.csdn.net/hczhiyue/article/details/6248229 sizeof?
-		LSTATUS lSetStatus = RegSetValueEx(hKey, value, 0, REG_SZ, (LPBYTE)data, /*strlen(data)*/lstrlen(data) + 1);
+		// https://www.cnblogs.com/XavierJian/p/6509679.html
+		LSTATUS lSetStatus = RegSetValueEx(hKey, envName, 0, REG_SZ, (LPBYTE)envVal, lstrlen(envVal) + 1);
 		RegCloseKey(hKey);
 
 		if (lSetStatus == ERROR_SUCCESS)
@@ -44,12 +47,16 @@ bool SetPermanentEnvironmentVariable(LPCTSTR value, LPCTSTR data)
 bool IsVRay3()
 {
 	fs::path cd = fs::current_path();
+	const string vr = cd.filename().string();
+	return vr.find("V_Ray_Adv_3") == 0 ? true : false;
+
+	/*fs::path cd = fs::current_path();
 	cd += L"\\VR3";
 	if (fs::exists(cd))
 	{
 		cout << "exists VR3 file -> " << cd << endl;
 		return true;
-	}
+	}*/
 
 	// C:\dps\2012\V_Ray_Adv_3_20_02
 	//string p = fs::current_path().string();
@@ -69,29 +76,18 @@ bool IsVRay3()
 	//	}
 	//}
 
-	return false;
+	//return false;
 }
 
 bool IsVRay4()
 {
 	 // C:\dps\2015\V_Ray_Next__update_1_1, C:\dps\2015\V_Ray_Next__update_2 或者 C:\dps\2016\V_Ray_Adv_4_10_02
-	string p = fs::current_path().string();
-	string::size_type pos = p.rfind("V_Ray_Adv_");
-	if (pos != string::npos)
+	fs::path cd = fs::current_path();
+	const string vr = cd.filename().string();
+	if (vr.find("V_Ray_Next") == 0 || vr.find("V_Ray_Adv_4") == 0)
 	{
-		string vray_version = p.substr(pos);
-		cout << "vray_version is " << vray_version << endl;
-		for (auto &c : vray_version)
-		{
-			// cout << c << ',';
-			// first digit is 3
-			if (isdigit(c) && c == '3')
-			{
-				return true;
-			}
-		}
+		return true;
 	}
-
 	return false;
 }
 
@@ -437,29 +433,59 @@ void LoadThis2012()
 }
 
 //////////////////////////////////// 从2013开始，使用新的算法，针对VRay2~3 与 VRay Next (VRay4), 仅通过环境变量与ini文件方式实现
-// VRay2~3:
-//@SET PATH = %~dp03ds Max 2013; %~dp0V - Ray\RT for 3ds Max 2013 for x64\bin; %PATH%
-//@rem SET VRAY24_RT_FOR_3DSMAX2013_MAIN_x64 = %~dp0V - Ray\RT for 3ds Max 2013 for x64\bin
-//@rem SET VRAY24_RT_FOR_3DSMAX2013_PLUGINS_x64 = %~dp0V - Ray\RT for 3ds Max 2013 for x64\bin\plugins
-//@REM SET VRAY_OSL_PATH_3DSMAX2014_x64 = %~dp0Program Files\Chaos Group\V - Ray\RT for 3ds Max 2014 for x64\opensl
-//
-//@"C:\Program Files\Autodesk\3ds Max 2013\3dsmax.exe" -p "%~dp03ds Max 2013\en - US\plugin.ini"
-//
-//
-// VRay4:
-//@rem SET PATH = %~dp03ds Max 2013; %~dp0V - Ray\RT for 3ds Max 2013 for x64\bin; %PATH%
-//@SET PATH = %~dp03ds Max 2013; %~dp0V - Ray\3ds Max 2013\bin; %PATH%
-//REM @SET VRAY4_FOR_3DSMAX2013_MAIN = %~dp0V - Ray\3ds Max 2013\bin
-//REM @SET VRAY4_FOR_3DSMAX2013_PLUGINS = %~dp0V - Ray\3ds Max 2013\bin\plugins
-//REM @SET VRAY_MDL_PATH_3DSMAX2013 = %~dp0V - Ray\3ds Max 2013\mdl
-//REM @SET VRAY_OSL_PATH_3DSMAX2013 = %~dp0V - Ray\3ds Max 2013\opensl
-//
-//@"C:\Program Files\Autodesk\3ds Max 2013\3dsmax.exe" -p "%~dp03ds Max 2013\en - US\plugin.ini"
+/*
+VRay2~3:
+@SET PATH=%~dp03ds Max 2013;%~dp0V-Ray\RT for 3ds Max 2013 for x64\bin;%PATH%
+@rem SET VRAY24_RT_FOR_3DSMAX2013_MAIN_x64=%~dp0V-Ray\RT for 3ds Max 2013 for x64\bin
+@rem SET VRAY24_RT_FOR_3DSMAX2013_PLUGINS_x64=%~dp0V-Ray\RT for 3ds Max 2013 for x64\bin\plugins
+@REM SET VRAY_OSL_PATH_3DSMAX2014_x64=%~dp0Program Files\Chaos Group\V-Ray\RT for 3ds Max 2014 for x64\opensl
+
+@"C:\Program Files\Autodesk\3ds Max 2013\3dsmax.exe" -p "%~dp03ds Max 2013\en-US\plugin.ini"
+
+
+VRay4:
+@SET PATH=%~dp03ds Max 2013;%~dp0V-Ray\3ds Max 2013\bin;%PATH%
+@SET VRAY4_FOR_3DSMAX2013_MAIN=%~dp0V-Ray\3ds Max 2013\bin
+@SET VRAY4_FOR_3DSMAX2013_PLUGINS=%~dp0V-Ray\3ds Max 2013\bin\plugins
+@SET VRAY_MDL_PATH_3DSMAX2013=%~dp0V-Ray\3ds Max 2013\mdl
+@SET VRAY_OSL_PATH_3DSMAX2013=%~dp0V-Ray\3ds Max 2013\opensl
+
+@"C:\Program Files\Autodesk\3ds Max 2013\3dsmax.exe" -p "%~dp03ds Max 2013\en-US\plugin.ini"
+*/
 ////////////////////////////////////
+void LoadThis2013() 
+{
+	fs::path cd = fs::current_path();
+	string path = (cd / "3ds Max 2013;").string();
+	if (IsVRay4())
+	{
+		path += (cd / "V-Ray\\3ds Max 2013\\bin;").string();
+	}
+	else
+	{
+		path += (cd / "V-Ray\\RT for 3ds Max 2013 for x64\\bin;").string();
+	}
+	path += path_env;
+	wstring ws;
+	ws.assign(path.begin(), path.end());
 
+	bool isEnvDone = SetPermanentEnvironmentVariable(TEXT("PATH"), ws.c_str());
 
+	wcout << ws << endl;
+	if (isEnvDone)
+	{
+		cout << "env OK" << endl;
+	}
+	else
+	{
+		cout << "env Error" << endl;
+	}
 
-void LoadThis2013() {}
+	string plugin = (cd / "3ds Max 2013\\en-US\\plugin.ini").string();
+	string plDest = R"(C:\Program Files\Autodesk\3ds Max 2013\en-US\plugin.ini)";
+	fs::copy(plugin, plDest, fs::copy_options::overwrite_existing);
+}
+
 void LoadThis2014() {}
 void LoadThis2015() {}
 void LoadThis2016() {}
