@@ -474,9 +474,15 @@ void LoadThis2012_VR3()
 	system(R"(@SETX VRAY32_RT_FOR_3DSMAX2012_PLUGINS_x64 "%~dp0V-Ray\RT for 3ds Max 2012 for x64\bin\plugins" 1>NUL 2>NUL)");
 	system(R"(@SETX VRAY_OSL_PATH_3DSMAX2012_x64 "%~dp0V-Ray\3dsmax 2012 for x64\opensl" 1>NUL 2>NUL)");*/
 
-	SetEnv4VRay3_2012("3ds Max 2012");
+	//SetEnv4VRay3_2012("3ds Max 2012");
 
 	//system(R"(@copy /Y "C:\dps\2012\V_Ray_Adv_3_20_02\3ds Max 2012\plugin.ini" "C:\Program Files\Autodesk\3ds Max 2012\plugin.ini" 1>NUL 2>NUL)");
+	//CopyPluginIni(L"3ds Max 2012");
+
+	//使用新的方法
+	const string maxVersion = "2012";
+	SetEnv(maxVersion);
+	//CopyPluginIni(maxVersion);
 	CopyPluginIni(L"3ds Max 2012");
 }
 
