@@ -19,7 +19,10 @@ extern const string path_env;
 // defined in LoadThis.cpp
 // = R"(C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Python27;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files (x86)\Autodesk\Backburner\;)";
 
-bool SetPermanentEnvironmentVariable(LPCTSTR value, LPCTSTR data);
+string GetPathEnvValue(const string maxVersion);
+//bool SetPermanentEnvironmentVariable(LPCTSTR value, LPCTSTR data);
+
+
 
 bool IsVRay3();
 bool IsVRay4();
@@ -38,7 +41,9 @@ void SetEnv4VRay3_2012(string maxFolder, string vrFolder = "V-Ray");
 void LoadThis2012_VR3();
 
 
-
+void SetEnv(string env);
+void CopyPluginIni(const string maxVersion);
+void LoadThis2013_2020(const string maxVersion);
 void LoadThis2013();
 void LoadThis2014();
 void LoadThis2015();

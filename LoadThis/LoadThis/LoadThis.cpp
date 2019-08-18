@@ -2,11 +2,36 @@
 #include "LoadThis.h"
 #include "KillProcessByName.h"
 
-//C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Python27;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files (x86)\Autodesk\Backburner\
+//C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Python27;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files (x86)\Autodesk\Backburner\;
 
-const string path_env = R"(C:\Windows\system32;C:\Python27;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files (x86)\Autodesk\Backburner\;)";
+const string path_env = R"(C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Python27;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files (x86)\Autodesk\Backburner\;)";
+
+//LPTSTR GetPathEnvValue(const string maxVersion)
+string GetPathEnvValue(const string maxVersion)
+{
+	fs::path cd = fs::current_path();
+	//string path = (cd / "3ds Max 2013;").string();
+	string path = (cd / string("3ds Max ").append(maxVersion).append(";")).string();
+	if (IsVRay4())
+	{
+		//path += (cd / "V-Ray\\3ds Max 2013\\bin;").string();
+		path += (cd / "V-Ray" / string("3ds Max ").append(maxVersion) / "bin;").string();
+	}
+	else
+	{
+		//path += (cd / "V-Ray\\RT for 3ds Max 2013 for x64\\bin;").string();
+		path += (cd / "V-Ray" / string("RT for 3ds Max ").append(maxVersion).append(" for x64") / "bin;").string();
+	}
+	cout << path << endl;
+
+	path = path_env + path;
+
+	//cout << path << endl;
+	return path;
+}
 
 // https://stackoverflow.com/questions/5246046/how-to-add-environment-variable-in-c
+// 不能正常使用，不知道为什么，会存在环境变量的值被截断的情况
 bool SetPermanentEnvironmentVariable(LPCTSTR envName, LPCTSTR envVal)
 {
 	/*
@@ -41,6 +66,42 @@ bool SetPermanentEnvironmentVariable(LPCTSTR envName, LPCTSTR envVal)
 	}
 
 	return false;
+}
+
+void SetEnv(const string maxVersion)
+{
+	HKEY hKey;
+	
+	//LPCTSTR keyPath = TEXT("System\\CurrentControlSet\\Control\\Session Manager\\Environment");
+	//LSTATUS lOpenStatus = RegOpenKeyEx(/*HKEY_LOCAL_MACHINE*/HKEY_LOCAL_MACHINE, keyPath, 0, KEY_ALL_ACCESS, &hKey);
+	LPCTSTR keyPath = TEXT("Environment");
+	LSTATUS lOpenStatus = RegOpenKeyEx(HKEY_CURRENT_USER, keyPath, 0, KEY_ALL_ACCESS, &hKey);
+	if (lOpenStatus == ERROR_SUCCESS)
+	{
+		string cmd = "@SETX PATH \"" + GetPathEnvValue(maxVersion) + "\" /M 1>NUL 2>NUL";
+		//string cmd = "@SETX PATH \"" + env + "\" 1>NUL 2>NUL";
+		//cout << cmd << endl;
+		system(cmd.c_str());
+
+		RegCloseKey(hKey);
+		SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0, (LPARAM)"Environment", SMTO_BLOCK, 1000, NULL);
+		cout << "SUCCESS" << endl;
+	}
+}
+
+void CopyPluginIni(const string maxVersion)
+{
+	fs::path cd = fs::current_path();
+	string pluginIniFile = (cd / string("3ds Max ").append(maxVersion) / "en-US" / "plugin.ini").string();
+	//string plDest = R"(C:\Program Files\Autodesk\3ds Max 2013\en-US\plugin.ini)";
+	string pluginIniDest = R"(C:\Program Files\Autodesk\3ds Max )";
+	pluginIniDest += maxVersion + R"(\en-US\plugin.ini)";
+	if (fs::exists(fs::path(pluginIniFile)))
+	{
+		fs::copy(pluginIniFile, pluginIniDest, fs::copy_options::overwrite_existing);
+		//cout << "copy plugin.ini done\n" << pluginIniFile << " -> \n" << pluginIniDest << endl;
+		cout << "Load Plugin DONE" << endl;
+	}
 }
 
 //如果当前目录下存在名为VR3的文件,直接返回true
@@ -145,7 +206,7 @@ void CopyPluginIni(const WCHAR *relativeDirName_3dsMaxVersion)
 	{
 		fs::copy(src, dst, fs::copy_options::recursive | fs::copy_options::overwrite_existing);
 	}
-	cout << src << " -> " << dst << endl;
+	//cout << src << " -> " << dst << endl;
 }
 
 void Kill3dsMax()
@@ -453,43 +514,57 @@ VRay4:
 @"C:\Program Files\Autodesk\3ds Max 2013\3dsmax.exe" -p "%~dp03ds Max 2013\en-US\plugin.ini"
 */
 ////////////////////////////////////
-void LoadThis2013() 
+
+void LoadThis2013_2020(const string maxVersion)
 {
-	fs::path cd = fs::current_path();
-	string path = (cd / "3ds Max 2013;").string();
-	if (IsVRay4())
-	{
-		path += (cd / "V-Ray\\3ds Max 2013\\bin;").string();
-	}
-	else
-	{
-		path += (cd / "V-Ray\\RT for 3ds Max 2013 for x64\\bin;").string();
-	}
-	path += path_env;
-	wstring ws;
-	ws.assign(path.begin(), path.end());
-
-	bool isEnvDone = SetPermanentEnvironmentVariable(TEXT("PATH"), ws.c_str());
-
-	wcout << ws << endl;
-	if (isEnvDone)
-	{
-		cout << "env OK" << endl;
-	}
-	else
-	{
-		cout << "env Error" << endl;
-	}
-
-	string plugin = (cd / "3ds Max 2013\\en-US\\plugin.ini").string();
-	string plDest = R"(C:\Program Files\Autodesk\3ds Max 2013\en-US\plugin.ini)";
-	fs::copy(plugin, plDest, fs::copy_options::overwrite_existing);
+	SetEnv(maxVersion);
+	CopyPluginIni(maxVersion);
 }
 
-void LoadThis2014() {}
-void LoadThis2015() {}
-void LoadThis2016() {}
-void LoadThis2017() {}
-void LoadThis2018() {}
-void LoadThis2019() {}
-void LoadThis2020() {}
+void LoadThis2013() 
+{
+	const string maxVersion = "2013";
+	LoadThis2013_2020(maxVersion);
+}
+
+void LoadThis2014() 
+{
+	const string maxVersion = "2014";
+	LoadThis2013_2020(maxVersion);
+}
+
+void LoadThis2015() 
+{
+	const string maxVersion = "2015";
+	LoadThis2013_2020(maxVersion);
+}
+
+void LoadThis2016() 
+{
+	const string maxVersion = "2016";
+	LoadThis2013_2020(maxVersion);
+}
+
+void LoadThis2017() 
+{
+	const string maxVersion = "2017";
+	LoadThis2013_2020(maxVersion);
+}
+
+void LoadThis2018() 
+{
+	const string maxVersion = "2018";
+	LoadThis2013_2020(maxVersion);
+}
+
+void LoadThis2019() 
+{
+	const string maxVersion = "2019";
+	LoadThis2013_2020(maxVersion);
+}
+
+void LoadThis2020() 
+{
+	const string maxVersion = "2020";
+	LoadThis2013_2020(maxVersion);
+}

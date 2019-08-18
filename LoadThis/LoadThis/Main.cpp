@@ -41,8 +41,29 @@ int main(int argc, char* argv[])
 	//wcout << ws << endl;
 	//cout << lstrlen(ws.c_str()) << endl;
 	//cout << sizeof(ws) << endl;
-	//system("pause");
-	//return 0;
+
+	//HKEY hKey;
+	////LPCTSTR keyPath = TEXT("Environment");
+	////LSTATUS lOpenStatus = RegOpenKeyEx(HKEY_CURRENT_USER, keyPath, 0, KEY_ALL_ACCESS, &hKey);
+	//LPCTSTR keyPath = TEXT("System\\CurrentControlSet\\Control\\Session Manager\\Environment");
+	//LSTATUS lOpenStatus = RegOpenKeyEx(/*HKEY_LOCAL_MACHINE*/HKEY_LOCAL_MACHINE, keyPath, 0, KEY_ALL_ACCESS, &hKey);
+	//if (lOpenStatus == ERROR_SUCCESS)
+	//{
+	//	cout << "SUCCESS" << endl;
+	//}
+	//else
+	//{
+	//	cout << "open key failed" << endl;
+	//}
+
+	/*fs::path cd = fs::current_path();
+	const string maxVersion = "2013";
+	string path = (cd / string("3ds Max ").append(maxVersion).append(";")).string();
+	cout << path << endl;
+	cout << to_string(2013) << endl;*/
+	/*cout << *GetPathEnvValue("2013");
+	system("pause");
+	return 0;*/
 	////////////////////end temp testing
 
 
@@ -99,18 +120,115 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	if (ver == "2013")
+	//////////////////////////////////// 从2013开始，使用新的算法，针对VRay2~3 与 VRay Next (VRay4), 仅通过环境变量与ini文件方式实现
+	// 本质上都是一样的处理，调用 LoadThis2013_2020(const string maxVersion)
+	if (ver == "2013" ||
+		ver == "2014" ||
+		ver == "2015" ||
+		ver == "2016" ||
+		ver == "2017" ||
+		ver == "2018" ||
+		ver == "2019" ||
+		ver == "2020"
+		)
 	{
 		try
 		{
-			LoadThis2013();
+			//LoadThis2013();
+			LoadThis2013_2020(ver);
 		}
 		catch (const std::exception& e)
 		{
 			cout << e.what() << endl;
 		}
 	}
+	
+/*
+	if (ver == "2014")
+	{
+		try
+		{
+			LoadThis2014();
+		}
+		catch (const std::exception& e)
+		{
+			cout << e.what() << endl;
+		}
+	}
+	
+	if (ver == "2015")
+	{
+		try
+		{
+			LoadThis2015();
+		}
+		catch (const std::exception& e)
+		{
+			cout << e.what() << endl;
+		}
+	}
+	
+	if (ver == "2016")
+	{
+		try
+		{
+			LoadThis2016();
+		}
+		catch (const std::exception& e)
+		{
+			cout << e.what() << endl;
+		}
+	}
+	
+	if (ver == "2017")
+	{
+		try
+		{
+			LoadThis2017();
+		}
+		catch (const std::exception& e)
+		{
+			cout << e.what() << endl;
+		}
+	}
+	
+	if (ver == "2018")
+	{
+		try
+		{
+			LoadThis2018();
+		}
+		catch (const std::exception& e)
+		{
+			cout << e.what() << endl;
+		}
+	}
+	
+	if (ver == "2019")
+	{
+		try
+		{
+			LoadThis2019();
+		}
+		catch (const std::exception& e)
+		{
+			cout << e.what() << endl;
+		}
+	}
+	
+	if (ver == "2020")
+	{
+		try
+		{
+			LoadThis2020();
+		}
+		catch (const std::exception& e)
+		{
+			cout << e.what() << endl;
+		}
+	}
+*/
 
-	cout << "DONE!" << endl;
+	//cout << "DONE!" << endl;
 	return 0;
 }
