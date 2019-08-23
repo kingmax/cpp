@@ -1,0 +1,5 @@
+D:\git\cpp\cppDll4cs\dat\bin\Release\dat.dll
+D:\git\cpp\cppDll4cs\dat\bin\Release\dat.pdb
+D:\git\cpp\cppDll4cs\dat\obj\Release\dat.csproj.CoreCompileInputs.cache
+D:\git\cpp\cppDll4cs\dat\obj\Release\dat.dll
+D:\git\cpp\cppDll4cs\dat\obj\Release\dat.pdb

@@ -1,6 +1,0 @@
-D:\git\cpp\cppDll4cs\plg_test\bin\Release\plg_test.exe
-D:\git\cpp\cppDll4cs\plg_test\bin\Release\plg_test.pdb
-D:\git\cpp\cppDll4cs\plg_test\obj\Release\plg2.csprojAssemblyReference.cache
-D:\git\cpp\cppDll4cs\plg_test\obj\Release\plg2.csproj.CoreCompileInputs.cache
-D:\git\cpp\cppDll4cs\plg_test\obj\Release\plg_test.exe
-D:\git\cpp\cppDll4cs\plg_test\obj\Release\plg_test.pdb
